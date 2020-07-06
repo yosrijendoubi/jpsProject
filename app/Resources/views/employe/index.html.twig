@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Employes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Idemp</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Tel</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employe in employes %}
+            <tr>
+                <td><a href="{{ path('employe_show', { 'idEmp': employe.idEmp }) }}">{{ employe.idEmp }}</a></td>
+                <td>{{ employe.nom }}</td>
+                <td>{{ employe.prenom }}</td>
+                <td>{{ employe.tel }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('employe_show', { 'idEmp': employe.idEmp }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('employe_edit', { 'idEmp': employe.idEmp }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('employe_new') }}">Create a new employe</a>
+        </li>
+    </ul>
+{% endblock %}
