@@ -1,43 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block main %}
     <h1>Employes list</h1>
+    <table id="example1" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Identifiant Employe</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Numero Telephone</th>
+        <td> </td>
+        <td></td>
+    </tr>
+    </thead>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Idemp</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Tel</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
         <tbody>
         {% for employe in employes %}
-            <tr>
-                <td><a href="{{ path('employe_show', { 'idEmp': employe.idEmp }) }}">{{ employe.idEmp }}</a></td>
-                <td>{{ employe.nom }}</td>
-                <td>{{ employe.prenom }}</td>
-                <td>{{ employe.tel }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('employe_show', { 'idEmp': employe.idEmp }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('employe_edit', { 'idEmp': employe.idEmp }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+            <div class="card">
+
+                <!-- /.card-header -->
+                <div class="card-body">
+
+                        <tbody>
+                        <tr>
+                            <td> {{ employe.idEmp }} </td>
+                            <td>{{ employe.nom }}</td>
+                            <td>{{ employe.prenom }} </td>
+                            <td>{{ employe.tel }}</td>
+                            <td>  <a href="{{ path('employe_delete',{ 'idEmp': employe.idEmp }) }}"> Supprimer</a> </td>
+                            <td>  <a href="{{ path('employe_edit',{ 'idEmp': employe.idEmp }) }}"> Modifier</a> </td>
+                        </tr>
+                        </tbody>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
         {% endfor %}
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('employe_new') }}">Create a new employe</a>
+            <a href="{{ path('employe_new') }}">Ajouter un nouveau employe</a>
         </li>
     </ul>
 {% endblock %}

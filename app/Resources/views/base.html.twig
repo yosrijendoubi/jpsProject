@@ -205,6 +205,13 @@
                     </li>
                 </ul>
             </nav>
+            <a href="#" class="nav-link active">
+                <i class=""></i>
+                <p>
+                    Employées
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
@@ -270,7 +277,19 @@ crossorigin="anonymous"></script>
 <script src="{{ asset('admin/dist/js/demo.js')}}"></script>
 <!-- Toastr -->
 <script src="{{ asset('admin/plugins/toastr/toastr.min.js')}}"></script>
-
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+    });
+  });
+</script>
 <script>
 
     $(function(){ // let all dom elements are loaded

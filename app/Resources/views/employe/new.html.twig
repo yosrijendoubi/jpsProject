@@ -1,16 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Employe creation</h1>
+{% block main %}
+    <div style="margin: 100px 200px 100px 200px">
+        <div class="spec ">
+            <h3>Creation d'un Employee</h3>
+            <div class="ser-t">
+                <b></b>
+                <span><i></i></span>
+                <b class="line"></b>
+            </div>
+        </div>
+        <div class="spec ">
+            {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br>
+            <input style="width: 150px; margin-bottom: 10px;height: 30px; border:none" class="btn btn-success btn-lg"  type="submit" value="Ajouter" />
+            {{ form_end(form) }}
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('employe_index') }}">Back to the list</a>
-        </li>
-    </ul>
+            <ul>
+                <li>
+                    <a class="btn btn-success btn-lg"  href="{{ path('employe_index') }}">Back to the list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
