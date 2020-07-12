@@ -4,10 +4,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
+use AppBundle\Entity\Presence;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Marche controller.
@@ -137,21 +142,69 @@ class MarcheController extends Controller
     }
 
     /**
-     * List employe par marche.
+     * consulter le marcher.
      *
-     * @Route("/list_employe/{idMarche}", name="list_employe_par_marche")
+     * @Route("/consulter/{idMarche}", name="consulter_marcher")
+     * @Route("/consulter/{idMarche}/{date}", name="consulter_marcher")
      * @Method("GET")
      */
-    public function ListEmployeParMarcheAction($idMarche){
+    public function ConsulterMarcherAction($idMarche , $date = null){
         $em =  $this->getDoctrine()->getManager();
 
         $marche = $em->getRepository(Marche::class)->find($idMarche);
-
         $listEmp  = $marche->getIdEmp();
-        return $this->render('presence/index.html.twig', array(
-            'listEmp' => $listEmp
+        if ( $date == null ){
+            $todayPresence = $this->getDoctrine()
+                ->getManager()
+                ->createQuery('SELECT p FROM AppBundle:Presence p WHERE p.date LIKE CURRENT_DATE() and p.idMarche = :idMarche')
+                ->setParameter('idMarche',$idMarche)
+                ->getResult();
+
+        }
+
+        else {
+            $todayPresence = $this->getDoctrine()
+                ->getManager()
+                ->createQuery('SELECT p FROM AppBundle:Presence p WHERE p.date LIKE :date and p.idMarche = :idMarche')
+                ->setParameter('date',$date)
+                ->setParameter('idMarche',$idMarche)
+                ->getResult();
+        }
+
+
+
+
+        return $this->render('marche/consulter.html.twig', array(
+
+            'datee'=> $date,
+            'idMarche'=>$idMarche,
+            'listEmp' => $listEmp,
+            'todayPresence'=>$todayPresence
         ));
 
+    }
+
+    /**
+     * presence par date.
+     *
+     * @Route("/presence/{date}/{idMarche}", name="presence_par_date")
+     * @Method("GET")
+     */
+    public function getPresenceParDate($date , $idMarche){
+
+
+        $Presences = $this->getDoctrine()
+            ->getManager()
+            ->createQuery('SELECT p FROM AppBundle:Presence p WHERE p.date LIKE :date and p.idMarche = :idMarche')
+            ->setParameter('date',$date)
+            ->setParameter('idMarche',$idMarche)
+            ->getResult();
+
+        $sz = new Serializer([new ObjectNormalizer()]);
+        $formatted = $sz->normalize($Presences);
+
+
+        return new JsonResponse($formatted);
     }
 
 }
