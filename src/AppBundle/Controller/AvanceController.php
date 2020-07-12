@@ -28,6 +28,7 @@ class AvanceController extends Controller
 
         return $this->render('avance/index.html.twig', array(
             'avances' => $avances,
+
         ));
     }
 

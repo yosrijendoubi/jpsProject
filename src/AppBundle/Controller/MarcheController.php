@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Avance;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
 use AppBundle\Entity\Presence;
@@ -148,7 +149,7 @@ class MarcheController extends Controller
      * @Route("/consulter/{idMarche}/{date}", name="consulter_marcher")
      * @Method("GET")
      */
-    public function ConsulterMarcherAction($idMarche , $date = null){
+    public function ConsulterMarcherAction($idMarche , $date = null,Request $request){
         $em =  $this->getDoctrine()->getManager();
 
         $marche = $em->getRepository(Marche::class)->find($idMarche);
@@ -170,13 +171,23 @@ class MarcheController extends Controller
                 ->setParameter('idMarche',$idMarche)
                 ->getResult();
         }
+        $avance = new Avance();
+        $form = $this->createForm('AppBundle\Form\AvanceType', $avance);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($avance);
+            $em->flush();
+
+        }
 
 
 
         return $this->render('marche/consulter.html.twig', array(
 
             'datee'=> $date,
+            'form' => $form->createView(),
             'idMarche'=>$idMarche,
             'listEmp' => $listEmp,
             'todayPresence'=>$todayPresence

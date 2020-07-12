@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Avance creation</h1>
-
+<div style="margin: 100px 200px 100px 200px">
+    <div class="spec ">
+        <h3>Creation d'un avance</h3>
+        <div class="ser-t">
+            <b></b>
+            <span><i></i></span>
+            <b class="line"></b>
+        </div>
+    </div>
+    <div class="spec ">
+        {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <br>
+        <input style="width: 150px; margin-bottom: 10px;height: 30px; border:none" class="btn btn-success btn-lg"  type="submit" value="Ajouter" />
     {{ form_end(form) }}
 
     <ul>
@@ -13,4 +23,6 @@
             <a href="{{ path('avance_index') }}">Back to the list</a>
         </li>
     </ul>
+    </div>
+</div>
 {% endblock %}
