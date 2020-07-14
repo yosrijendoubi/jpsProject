@@ -1,35 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Employe</h1>
+    <h1>Agent_de_rotation</h1>
 
     <table>
         <tbody>
             <tr>
-                <th>Idemp</th>
-                <td>{{ employe.idEmp }}</td>
+                <th>Id</th>
+                <td>{{ agent_de_rotation.id }}</td>
             </tr>
             <tr>
                 <th>Nom</th>
-                <td>{{ employe.nom }}</td>
+                <td>{{ agent_de_rotation.nom }}</td>
             </tr>
             <tr>
                 <th>Prenom</th>
-                <td>{{ employe.prenom }}</td>
+                <td>{{ agent_de_rotation.prenom }}</td>
             </tr>
             <tr>
                 <th>Tel</th>
-                <td>{{ employe.tel }}</td>
+                <td>{{ agent_de_rotation.tel }}</td>
             </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('employe_index') }}">Back to the list</a>
+            <a href="{{ path('agent_de_rotation_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('employe_edit', { 'idEmp': employe.idEmp }) }}">Edit</a>
+            <a href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

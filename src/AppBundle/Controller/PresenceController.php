@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Agent_de_rotation;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
 use AppBundle\Entity\Presence;
@@ -143,24 +144,48 @@ class PresenceController extends Controller
      * Creates a new presence entity.
      *
      * @Route("/api/new/{idMarche}/{idEmp}/{etat}/{date}", name="presence_api_new")
+     * @Route("/api/agent/new/{idMarche}/{idAgent}/{etat}/{date}", name="presence_agent_api_new")
      * @Method({"GET", "POST"})
      */
-    public function newPresenceAction($idMarche , $idEmp , $etat , $date){
+    public function newPresenceAction($idMarche , $idEmp=null , $etat , $date ,$idAgent=null){
+        if ( $idAgent){
 
-        $em = $this->getDoctrine()->getManager();
-        $presence = new Presence();
-        $presenceDate = new \DateTime($date);
-        $emp = $em->getRepository(Employe::class)->find($idEmp);
-        $marche = $em->getRepository(Marche::class)->find($idMarche);
-        $presence->setIdMarche($marche);
-        $presence->setIdEmp($emp);
-        $presence->setEtat($etat);
-        $presence->setDate($presenceDate);
+            $em = $this->getDoctrine()->getManager();
+            $presence = new Presence();
+            $presenceDate = new \DateTime($date);
+            $emp = $em->getRepository(Agent_de_rotation::class)->find($idAgent);
+            $marche = $em->getRepository(Marche::class)->find($idMarche);
+            $presence->setIdMarche($marche);
+            $presence->setIdAgent($emp);
+            $presence->setEtat($etat);
+            $presence->setDate($presenceDate);
 
-        $em->persist($presence);
-        $em->flush();
-        dump($date);
-        return new Response($presence->getIdPresence());
+            $em->persist($presence);
+            $em->flush();
+            dump($date);
+            return new Response($presence->getIdPresence());
+
+        }
+
+        else {
+
+            $em = $this->getDoctrine()->getManager();
+            $presence = new Presence();
+            $presenceDate = new \DateTime($date);
+            $emp = $em->getRepository(Employe::class)->find($idEmp);
+            $marche = $em->getRepository(Marche::class)->find($idMarche);
+            $presence->setIdMarche($marche);
+            $presence->setIdEmp($emp);
+            $presence->setEtat($etat);
+            $presence->setDate($presenceDate);
+
+            $em->persist($presence);
+            $em->flush();
+            dump($date);
+            return new Response($presence->getIdPresence());
+
+        }
+
 
     }
 

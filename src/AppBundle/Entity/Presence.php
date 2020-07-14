@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Presence
  *
- * @ORM\Table(name="presence", indexes={@ORM\Index(name="fk_emp", columns={"id_emp"}), @ORM\Index(name="fk_marche", columns={"id_marche"})})
+ * @ORM\Table(name="presence", indexes={@ORM\Index(name="fk_emp", columns={"id_emp"}), @ORM\Index(name="fk_agent", columns={"id_agent_rotation"}),@ORM\Index(name="fk_marche", columns={"id_marche"})})
  * @ORM\Entity
  */
 class Presence
@@ -126,14 +126,42 @@ class Presence
     }
 
     /**
-     * @var \Marche
+ * @var \Marche
+ *
+ * @ORM\ManyToOne(targetEntity="Marche")
+ * @ORM\JoinColumns({
+ *   @ORM\JoinColumn(name="id_marche", referencedColumnName="id_marche")
+ * })
+ */
+    private $idMarche;
+
+    /**
+     * @return \Agent_de_rotation
+     */
+    public function getIdAgent()
+    {
+        return $this->idAgent;
+    }
+
+    /**
+     * @param \Agent_de_rotation $idAgent
+     */
+    public function setIdAgent($idAgent)
+    {
+        $this->idAgent = $idAgent;
+    }
+
+    /**
+     * @var \Agent_de_rotation
      *
-     * @ORM\ManyToOne(targetEntity="Marche")
+     * @ORM\ManyToOne(targetEntity="Agent_de_rotation")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_marche", referencedColumnName="id_marche")
+     *   @ORM\JoinColumn(name="id_agent_rotation", referencedColumnName="id")
      * })
      */
-    private $idMarche;
+    private $idAgent;
+
+
 
 
 }

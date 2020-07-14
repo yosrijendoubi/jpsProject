@@ -1,39 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block head %}
     {{ parent() }}
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- daterange picker -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/daterangepicker/daterangepicker.css') }}">
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    <!-- Bootstrap Color Picker -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
-    <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
-    <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <!-- Bootstrap4 Duallistbox -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <!-- fullCalendar -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fullcalendar/main.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fullcalendar-daygrid/main.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fullcalendar-timegrid/main.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/fullcalendar-bootstrap/main.min.css') }}">
-
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
-
-    <!-- Theme style -->
 
     <style>
         .validation {
@@ -69,7 +36,7 @@
         </div>
     </div>
     <!-- Modal -->
-<div class="modal fade" id="modal-xl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="modal-xl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -91,19 +58,31 @@
                                 <th>Prenom</th>
                                 <th>Present</th>
                                 <th>Absent</th>
+                                <th>type</th>
 
                             </tr>
                             </thead>
                             <tbody>
                             {% for emp in listEmp %}
-                            <tr id="validation{{ emp.idEmp  }}">
-                                <td id="{{ emp.idEmp }}">{{ loop.index }}</td>
-                                <td>{{ emp.nom }}</td>
-                                <td>{{ emp.prenom }}</td>
-                                <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="1"/></td>
-                                <td><input type="checkbox" id="scales{{ emp.idEmp  }}" name="scales{{ emp.idEmp  }}" value="0"/></td>
-                            </tr>
+                                <tr id="validation{{ emp.idEmp  }}">
+                                    <td id="{{ emp.idEmp }}">#</td>
+                                    <td>{{ emp.nom }}</td>
+                                    <td>{{ emp.prenom }}</td>
+                                    <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="1"/></td>
+                                    <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="0"/></td>
+                                    <td></td>
+                                </tr>
 
+                            {% endfor %}
+                            {% for affectation in affectations %}
+                                <tr id="validationagent{{ affectation.idAgent.id  }}">
+                                    <td id="{{ affectation.idAgent.id  }}">#</td>
+                                    <td>{{ affectation.idAgent.nom  }}</td>
+                                    <td>{{ affectation.idAgent.prenom }}</td>
+                                    <td><input type="checkbox"  name="agent{{ affectation.idAgent.id  }}" value="1"/></td>
+                                    <td><input type="checkbox" id="agent{{ affectation.idAgent.id  }}" name="agent{{ affectation.idAgent.id  }}" value="0"/></td>
+                                    <td style="color: darkslateblue"><b>Rotation</b></td>
+                                </tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -148,19 +127,24 @@
                             </thead>
                             <tbody>
                             {% for p in todayPresence %}
-                                <tr onchange="return latest(this)">
-                                    <td id="{{ p.idEmp.idEmp }}">{{ loop.index }}</td>
-                                    <td>{{ p.idEmp.nom }}</td>
-                                    <td>{{ p.idEmp.prenom }}</td>
-                                    {% if p.etat == 1 %}
-                                    <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1" checked/></td>
-                                        <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
+                                {% if p.IdAgent %}
 
-                                    {%  else %}
-                                        <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
-                                    <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" checked/></td>
-                                        {% endif %}
-                                </tr>
+                                    {% else %}
+                                        <tr onchange="return latest(this)">
+                                            <td id="{{ p.idEmp.idEmp }}">{{ loop.index }}</td>
+                                            <td>{{ p.idEmp.nom }}</td>
+                                            <td>{{ p.idEmp.prenom }}</td>
+                                            {% if p.etat == 1 %}
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1" checked/></td>
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
+
+                                            {%  else %}
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" checked/></td>
+                                            {% endif %}
+                                        </tr>
+                                {% endif %}
+
 
                             {% endfor %}
                             </tbody>
@@ -177,185 +161,205 @@
         </div>
     </div>
 
-            <!-- Main content -->
+    <!-- Main content -->
     <section class="content">
 
-    <div class="container-fluid">
+        <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card card-primary card-tabs">
-                    <div class="card-header p-0 pt-1">
-                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Presence</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">List des employes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Rapport</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content" id="custom-tabs-one-tabContent">
-                            <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-header border-transparent">
-                                                <label><b>Date : </b></label>
-                                                <input id="taherDate" value="{{ datee}}" class="form-group col-md-6" type="date" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-primary card-tabs">
+                        <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Presence</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">List des employes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Rapport</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header border-transparent">
+                                                    <label><b>Date : </b></label>
+                                                    <input id="taherDate" value="{{ datee}}" class="form-group col-md-6" type="date" />
 
-                                                {% if todayPresence is empty %}
+                                                    {% if todayPresence is empty %}
 
-                                                    <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-xl"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter Presence</button>
+                                                        <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-xl"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter Presence</button>
 
-                                                {% else  %}
-                                                    <button style="float: right" type="button" class="btn btn-primary col-md-2" data-toggle="modal" data-target="#modal-xl-2"><i class="fa fa-plus" aria-hidden="true"></i> Modifier Presence</button>
+                                                    {% else  %}
+                                                        <button style="float: right" type="button" class="btn btn-primary col-md-2" data-toggle="modal" data-target="#modal-xl-2"><i class="fa fa-plus" aria-hidden="true"></i> Modifier Presence</button>
 
-                                                {% endif %}
-                                                <div class="card-tools">
+                                                    {% endif %}
+                                                    <div class="card-tools">
+
+                                                    </div>
 
                                                 </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table id="example2" class="table m-0">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Nom</th>
+                                                                <th>Prenom</th>
+                                                                <th>Etat</th>
+                                                                <th>Type</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for p in todayPresence %}
+                                                                {% if p.idAgent %}
+                                                                    <tr>
+                                                                        <td>{{ loop.index }}</td>
+                                                                        <td>{{ p.idAgent.nom }}</td>
+                                                                        <td>{{ p.idAgent.prenom }}</td>
 
+                                                                        {% if  p.etat == 1 %}
+                                                                            <td><span class="badge badge-success">Present</span></td>
+
+                                                                        {% else  %}
+                                                                            <td><span class="badge badge-danger">Absent</span></td>
+                                                                        {% endif %}
+
+                                                                        <td><b style="color: darkslateblue">Rotation</b></td>
+                                                                    </tr>
+                                                                {% else %}
+                                                                    <tr>
+                                                                        <td>{{ loop.index }}</td>
+                                                                        <td>{{ p.idEmp.nom }}</td>
+                                                                        <td>{{ p.idEmp.prenom }}</td>
+
+                                                                        {% if  p.etat == 1 %}
+                                                                            <td><span class="badge badge-success">Present</span></td>
+
+                                                                        {% else  %}
+                                                                            <td><span class="badge badge-danger">Absent</span></td>
+                                                                        {% endif %}
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    {% endif %}
+
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.table-responsive -->
+                                                </div>
+                                                <!-- /.card-body -->
+                                                <!-- /.card-footer -->
+                                            </div></div>
+                                        <!-- Default box -->
+
+
+                                        <!-- /.card -->
+
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                    <div class="col-md-12">
+                                        <!-- USERS LIST -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">List des Employes</h3>
+
+                                                <div class="card-tools">
+                                                    <span class="badge badge-danger">8 New Members</span>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <!-- /.card-header -->
                                             <div class="card-body p-0">
                                                 <div class="table-responsive">
-                                                    <table id="example2" class="table m-0">
+                                                    <table id="example1" class="table">
                                                         <thead>
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Nom</th>
                                                             <th>Prenom</th>
-                                                            <th>Etat</th>
+                                                            <th>Action</th>
+
+
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for p in todayPresence %}
-                                                            <tr>
-                                                                <td>{{ loop.index }}</td>
-                                                                <td>{{ p.idEmp.nom }}</td>
-                                                                <td>{{ p.idEmp.prenom }}</td>
-
-                                                                {% if  p.etat == 1 %}
-                                                                    <td><span class="badge badge-success">Present</span></td>
-
-                                                                {% else  %}
-                                                                    <td><span class="badge badge-danger">Absent</span></td>
-                                                                {% endif %}
+                                                        {% for emp in listEmp %}
+                                                            <tr id="validation{{ emp.idEmp  }}">
+                                                                <td id="{{ emp.idEmp }}">{{ loop.index }}</td>
+                                                                <td>{{ emp.nom }}</td>
+                                                                <td>{{ emp.prenom }}</td>
+                                                                <td><button class="btn btn-primary">Ajouter Avance</button></td>
                                                             </tr>
+
                                                         {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <!-- /.table-responsive -->
+                                                <!-- /.users-list -->
                                             </div>
                                             <!-- /.card-body -->
+                                            <div class="card-footer text-center">
+                                                <a href="javascript::">View All Users</a>
+                                            </div>
                                             <!-- /.card-footer -->
-                                        </div></div>
-                                    <!-- Default box -->
-
-
-                                    <!-- /.card -->
-
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
-                                <div class="col-md-12">
-                                    <!-- USERS LIST -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">List des Employes</h3>
-
-                                            <div class="card-tools">
-                                                <span class="badge badge-danger">8 New Members</span>
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
                                         </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body p-0">
-                                            <div class="table-responsive">
-                                                <table id="example1" class="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Nom</th>
-                                                        <th>Prenom</th>
-                                                        <th>Action</th>
-
-
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for emp in listEmp %}
-                                                        <tr id="validation{{ emp.idEmp  }}">
-                                                            <td id="{{ emp.idEmp }}">{{ loop.index }}</td>
-                                                            <td>{{ emp.nom }}</td>
-                                                            <td>{{ emp.prenom }}</td>
-                                                            <td><button class="btn btn-primary">Ajouter Avance</button></td>
-                                                        </tr>
-
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <!-- /.users-list -->
-                                        </div>
-                                        <!-- /.card-body -->
-                                        <div class="card-footer text-center">
-                                            <a href="javascript::">View All Users</a>
-                                        </div>
-                                        <!-- /.card-footer -->
+                                        <!--/.card -->
                                     </div>
-                                    <!--/.card -->
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                            <input id="monthYear" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                                <input id="monthYear" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                                <button class="btn btn-success" onclick="return SearchRendement(this)"><i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
-                                            <button class="btn btn-success" onclick="return SearchRendement(this)"><i class="fa fa-search" aria-hidden="true"></i></button>
                                         </div>
+                                    </div>
+                                    <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-chart">Chart</button>
+
+                                    <div class="table-responsive">
+                                        <table id="example4" class="table table-bordered table-striped m-0 ">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nom</th>
+                                                <th>Prenom</th>
+                                                <th>Total Presence</th>
+                                                <th>Total Absence</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                                <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-chart">Chart</button>
-
-                                <div class="table-responsive">
-                                    <table id="example4" class="table table-bordered table-striped m-0 ">
-                                        <thead class="thead-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Nom</th>
-                                            <th>Prenom</th>
-                                            <th>Total Presence</th>
-                                            <th>Total Absence</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <!-- /.card -->
                         </div>
                     </div>
-                    <!-- /.card -->
+
                 </div>
+
             </div>
-
-        </div>
-
-        </div>
 
 
 
@@ -679,9 +683,36 @@ var url = '{{ path("consulter_marcher", {'idMarche': 'idMarche' ,  'date': 'date
 function latest(thisRow){
     alert($(thisRow).val());
 }
-    function EnregisterAbsence(){
-        var test = true ;
-     {% for emp in listEmp %}
+function checkValidationRotation(){
+    var test = true ;
+     {% for affectation in affectations %}
+     var i = 0 ;
+      $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function(){
+
+            if($(this).prop("checked") == false){
+                console.log("Checkbox agent is not checked.");
+                i++;
+            }
+
+            else {
+                $("#validationagent{{ affectation.idAgent.id  }}").removeClass('validation');
+            }
+
+        });
+
+      if ( i == 2 ){
+          console.log("validation");
+          $("#validationagent{{ affectation.idAgent.id  }}").addClass('validation');
+          $("#lignemanquante").show();
+          test = false ;
+      }
+     {% endfor %}
+
+     return test;
+}
+function checkValidation(){
+    var test = true ;
+    {% for emp in listEmp %}
      var i = 0 ;
       $("input:checkbox[name='scales{{ emp.idEmp }}']").each(function(){
 
@@ -702,14 +733,77 @@ function latest(thisRow){
           $("#lignemanquante").show();
           test = false ;
       }
+
      {% endfor %}
 
-     if ( test == true ){
-         $("#modal-xl").hide();
-            {% for emp in listEmp %}
-           var id = {{ emp.idEmp }}
-     var namee = "scales"+{{ emp.idEmp  }}
+     return test;
+}
+function EnregisterAbsenceAgentRotation(){
+     var test = true ;
+     var test2 = checkValidation();
+     {% for affectation in affectations %}
+     var i = 0 ;
+      $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function(){
 
+            if($(this).prop("checked") == false){
+                console.log("Checkbox agent is not checked.");
+                i++;
+            }
+
+            else {
+                $("#validationagent{{ affectation.idAgent.id  }}").removeClass('validation');
+            }
+
+        });
+
+      if ( i == 2 ){
+          console.log("validation");
+          $("#validationagent{{ affectation.idAgent.id  }}").addClass('validation');
+          $("#lignemanquante").show();
+          test = false ;
+      }
+     {% endfor %}
+
+     if (( test == true ) && (test2 == true)){
+
+            {% for affectation in affectations %}
+     $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function()
+{
+    if($(this).is(':checked')){
+        var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date'} ) }}';
+                url = url.replace("idMarche", {{ idMarche }});
+                url = url.replace("idAgent", {{ affectation.idAgent.id }});
+                url = url.replace("etat", $(this).val());
+                url = url.replace("date", $("#taherDate").val());
+                $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+    }
+
+})
+{% endfor %}
+       }
+}
+function EnregisterAbsenceAgentNormal(){
+
+
+     var test = checkValidation();
+     var test2 = checkValidationRotation();
+
+     if (( test == true ) && (test2== true)){
+    $("#modal-xl").hide();
+            {% for emp in listEmp %}
      $("input:checkbox[name='scales{{ emp.idEmp }}']").each(function()
 {
     if($(this).is(':checked')){
@@ -737,6 +831,12 @@ function latest(thisRow){
 })
 {% endfor %}
        }
+}
+    function EnregisterAbsence(){
+     {% if affectations %}
+        EnregisterAbsenceAgentRotation();
+      {% endif %}
+        EnregisterAbsenceAgentNormal();
     }
 
     function SearchRendement(bout){

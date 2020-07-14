@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Affectation_Agent_Rotation;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
 use AppBundle\Entity\Presence;
@@ -152,11 +153,18 @@ class MarcheController extends Controller
         $em =  $this->getDoctrine()->getManager();
 
         $marche = $em->getRepository(Marche::class)->find($idMarche);
+
         $listEmp  = $marche->getIdEmp();
         if ( $date == null ){
             $todayPresence = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT p FROM AppBundle:Presence p WHERE p.date LIKE CURRENT_DATE() and p.idMarche = :idMarche')
+                ->setParameter('idMarche',$idMarche)
+                ->getResult();
+
+            $affectations = $this->getDoctrine()
+                ->getManager()
+                ->createQuery('SELECT a FROM AppBundle:Affectation_Agent_Rotation a WHERE a.date LIKE CURRENT_DATE() and a.idMarche = :idMarche')
                 ->setParameter('idMarche',$idMarche)
                 ->getResult();
 
@@ -166,6 +174,13 @@ class MarcheController extends Controller
             $todayPresence = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT p FROM AppBundle:Presence p WHERE p.date LIKE :date and p.idMarche = :idMarche')
+                ->setParameter('date',$date)
+                ->setParameter('idMarche',$idMarche)
+                ->getResult();
+
+            $affectations = $this->getDoctrine()
+                ->getManager()
+                ->createQuery('SELECT a FROM AppBundle:Affectation_Agent_Rotation a WHERE a.date LIKE :date and a.idMarche = :idMarche')
                 ->setParameter('date',$date)
                 ->setParameter('idMarche',$idMarche)
                 ->getResult();
@@ -179,7 +194,8 @@ class MarcheController extends Controller
             'datee'=> $date,
             'idMarche'=>$idMarche,
             'listEmp' => $listEmp,
-            'todayPresence'=>$todayPresence
+            'todayPresence'=>$todayPresence,
+            'affectations'=>$affectations
         ));
 
     }
