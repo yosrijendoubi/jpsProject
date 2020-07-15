@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Agent_de_rotation</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ agent_de_rotation.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ agent_de_rotation.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ agent_de_rotation.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ agent_de_rotation.tel }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('agent_de_rotation_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

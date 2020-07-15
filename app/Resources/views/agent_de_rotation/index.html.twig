@@ -1,0 +1,255 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block main %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="btn btn-success" onclick="return AddRow()">
+                        <span aria-hidden="true">+</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="idagent" type="hidden">
+                        <form id="myform">
+                            <div class="row formAffectation">
+                                 <div class="col-md-3">
+                                     <input type="date" class="form-control" name="dateAffectation" placeholder="date">
+                                 </div>
+                                <div class="col-md-3">
+                        <select class="form-control" name="marche">
+                            {% for marche in marches %}
+                            <option value="{{ marche.idMarche }}">{{ marche.Libellle }}</option>
+                            {%  endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="journuit">
+                            <option value="jour">Jour</option>
+                            <option value="nuit">Nuit</option>
+                        </select>
+                    </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" name="role">
+                                        <option value="rotation">Rotation</option>
+                                        <option value="doublage">Doublage</option>
+                                    </select>
+                                </div>
+                </div>
+
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="return addAffectation()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Responsive Hover Table</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table id="example1" class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Marche Actuelle</th>
+                            <th>Affectation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for agent_de_rotation in agent_de_rotations %}
+                            <tr>
+                                <td><a href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}">{{ agent_de_rotation.idEmp }}</a></td>
+                                <td>{{ agent_de_rotation.nom }}</td>
+                                <td>{{ agent_de_rotation.prenom }}</td>
+
+                                <td>{{ agent_de_rotation.idMarche }}</td>
+
+                                {#<td>
+                                                                    <a title="view this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-eye text-primary" aria-hidden="true"></i> </a>
+                                                                    <a title="edit this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-edit text-primary" aria-hidden="true"></i> </a>
+                                                                    <a title="delete this user" class="btn btn-default btn-sm "> <i class="fa fa-trash text-danger" aria-hidden="true"></i></i> </a>
+                                                                </td> #}
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }})">
+                                        <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascript %}
+{{ parent() }}
+<script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
+
+
+<!-- Bootstrap 4 -->
+<script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="{{ asset('admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ asset('admin/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
+<!-- date-range-picker -->
+<script src="{{ asset('admin/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- bootstrap color picker -->
+<script src="{{ asset('admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{{ asset('admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<!-- Bootstrap Switch -->
+<script src="{{ asset('admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('admin/dist/js/demo.js') }}"></script>
+
+<!-- DataTables -->
+<script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+    <!-- Page specific script -->
+    <script>
+
+    $(document).ready( function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+
+
+} );
+
+
+    </script>
+
+    <script>
+  $(function () {
+
+    //Date range picker
+    $('#reservationdate').datetimepicker({
+        viewMode: 'years',
+                format: 'MM/YYYY',
+                maxDate: new Date(new Date().getFullYear(), new Date().getMonth()),
+
+    });
+
+  })
+
+
+
+</script>
+
+<script>
+
+function AddRow(){
+    $("#myform").append("<br><div class=\"row formAffectation\">\n"+
+"                                 <div class=\"col-md-3\">\n"+
+"                                     <input type=\"date\" class=\"form-control\" name=\"dateAffectation\" placeholder=\"date\">\n"+
+"                                 </div>\n"+
+"                                <div class=\"col-md-3\">\n"+
+"                        <select class=\"form-control\" name=\"marche\">\n"+
+"                            {% for marche in marches %}\n"+
+"                            <option value=\"{{ marche.idMarche }}\">{{ marche.Libellle }}</option>\n"+
+"                            {%  endfor %}\n"+
+"                        </select>\n"+
+"                    </div>\n"+
+"                    <div class=\"col-md-3\">\n"+
+"                        <select class=\"form-control\" name=\"journuit\">\n"+
+"                            <option value=\"jour\">Jour</option>\n"+
+"                            <option value=\"nuit\">Nuit</option>\n"+
+"                        </select>\n"+
+"                    </div>\n"+
+"<div class=\"col-md-3\">\n"+
+"<select class=\"form-control\" name=\"role\">\n"+
+"<option value=\"rotation\">Rotation</option>\n"+
+"<option value=\"doublage\">Doublage</option>\n"+
+"</select>\n"+
+"</div>\n"+
+"                </div>");
+}
+
+$('#exampleModalCenter').on('hidden.bs.modal', function (e) {
+  $("#myform").empty();
+  AddRow();
+})
+function openModal(idAgent){
+    $('#exampleModalCenter').on('show.bs.modal', function (e ) {
+  $("#idagent").val(idAgent);
+});
+    $('#exampleModalCenter').modal('show');
+}
+
+
+
+function addAffectation(){
+    $('.formAffectation').each(function() {
+
+        var dateAffectation = $(this).find("[name='dateAffectation']").val();
+        var marche = $(this).find("[name='marche']").val();
+        var idagent = $("#idagent").val();
+        var journuit = $(this).find("[name='journuit']").val();
+        var role = $(this).find("[name='role']").val();
+
+
+        var url = '{{ path("affectation_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'date':'date' , 'type':'type' ,'role':'role'} ) }}';
+                url = url.replace("idMarche", marche);
+                url = url.replace("idAgent", idagent);
+                url = url.replace("date", dateAffectation);
+                url = url.replace("type", journuit);
+                url = url.replace("role", role);
+
+                $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+
+
+
+});
+}
+</script>
+
+
+
+{% endblock %}

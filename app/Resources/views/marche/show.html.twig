@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Marche</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Idmarche</th>
+                <td>{{ marche.idMarche }}</td>
+            </tr>
+            <tr>
+                <th>Libellle</th>
+                <td>{{ marche.libellle }}</td>
+            </tr>
+            <tr>
+                <th>Nbrrepos</th>
+                <td>{{ marche.nbrrepos }}</td>
+            </tr>
+            <tr>
+                <th>Spjfixe</th>
+                <td>{{ marche.spjfixe }}</td>
+            </tr>
+            <tr>
+                <th>Spjchef</th>
+                <td>{{ marche.spjchef }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('marche_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('marche_edit', { 'idMarche': marche.idMarche }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

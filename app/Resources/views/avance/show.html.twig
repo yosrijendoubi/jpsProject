@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Avance</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ avance.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ avance.montant }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if avance.date %}{{ avance.date|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('avance_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('avance_edit', { 'id': avance.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

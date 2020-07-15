@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Avances list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for avance in avances %}
+            <tr>
+                <td><a href="{{ path('avance_show', { 'id': avance.id }) }}">{{ avance.id }}</a></td>
+                <td>{{ avance.montant }}</td>
+                <td>{% if avance.date %}{{ avance.date|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('avance_show', { 'id': avance.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('avance_edit', { 'id': avance.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('avance_new') }}">Create a new avance</a>
+        </li>
+    </ul>
+{% endblock %}
