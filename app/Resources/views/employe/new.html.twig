@@ -1,16 +1,29 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 {% block main %}
-    <h1>Employe creation</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div style="margin: 100px 200px 100px 200px">
+        <div class="spec ">
+            <h3>Creation d'un Employee</h3>
+            <div class="ser-t">
+                <b></b>
+                <span><i></i></span>
+                <b class="line"></b>
+            </div>
+        </div>
+        <div class="spec ">
+            {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <br>
+           <center><input   class="btn btn-success btn-lg"  type="submit" value="Ajouter" /> </center>
+            {{ form_end(form) }}
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('employe_index') }}">Back to the list</a>
-        </li>
-    </ul>
+        </div>
+    </div>
 {% endblock %}

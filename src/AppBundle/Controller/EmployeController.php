@@ -47,8 +47,9 @@ class EmployeController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($employe);
             $em->flush();
+            $this->addFlash('success', 'Employée ajoutée avec success!');
 
-            return $this->redirectToRoute('employe_show', array('idEmp' => $employe->getIdemp()));
+            return $this->redirectToRoute('employe_new', array('idEmp' => $employe->getIdemp()));
         }
 
         return $this->render('employe/new.html.twig', array(

@@ -23,22 +23,30 @@ class AffectationController extends Controller
      * @Route("/new/{idMarche}/{idAgent}/{date}/{type}/{role}", name="affectation_new")
      */
     public function newAction($idMarche,$idAgent,$date,$type,$role){
-
-        $dateAffectation = new \DateTime($date);
         $em = $this->getDoctrine()->getManager();
-        $agent = $em->getRepository(Employe::class)->find($idAgent);
-        $marche = $em->getRepository(Marche::class)->find($idMarche);
-        $affectation = new Affectation_Agent_Rotation();
-        $affectation->setIdAgent($agent);
-        $affectation->setIdMarche($marche);
-        $affectation->setRole($role);
-        $affectation->setType($type);
-        $affectation->setDate($dateAffectation);
+        $oldAffectation = $em->getRepository(Affectation_Agent_Rotation::class)->findOneBy(array('idAgent'=>$idAgent , 'idMarche'=>$idMarche ,'date'=> new \DateTime($date),'role'=>$role,'type'=>$type));
+        if (!$oldAffectation){
+            $dateAffectation = new \DateTime($date);
 
-        $em->persist($affectation);
-        $em->flush();
+            $agent = $em->getRepository(Employe::class)->find($idAgent);
+            $marche = $em->getRepository(Marche::class)->find($idMarche);
+            $affectation = new Affectation_Agent_Rotation();
+            $affectation->setIdAgent($agent);
+            $affectation->setIdMarche($marche);
+            $affectation->setRole($role);
+            $affectation->setType($type);
+            $affectation->setDate($dateAffectation);
 
-        return new Response("ok");
+            $em->persist($affectation);
+            $em->flush();
+            return new Response('ok');
+        }
+
+        else{
+            return new Response("Error");
+        }
+
+
 
     }
 }

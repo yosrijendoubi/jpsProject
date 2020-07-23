@@ -50,8 +50,28 @@ class Marche
     private $spjchef;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=100, nullable=false)
+     */
+    private $adresse;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tel", type="integer", nullable=false)
+     */
+    private $tel;
+
+    /**
      * Constructor
      */
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=100, nullable=false)
+     */
+    private $logo;
     public function __construct()
     {
         $this->idEmp = new \Doctrine\Common\Collections\ArrayCollection();
@@ -140,6 +160,70 @@ class Marche
     public function setSpjchef($spjchef)
     {
         $this->spjchef = $spjchef;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * @param string $adresse
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTel()
+    {
+        return $this->tel;
+    }
+
+    /**
+     * @param int $tel
+     */
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getIdEmp()
+    {
+        return $this->idEmp;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $idEmp
+     */
+    public function setIdEmp($idEmp)
+    {
+        $this->idEmp = $idEmp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
     }
 
 }
