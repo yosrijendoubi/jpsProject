@@ -45,14 +45,11 @@ class EmployeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            foreach ($employe->getIdMarche() as &$value) {
-
-                $value->addEmployeAction($employe);
-            }
             $em->persist($employe);
             $em->flush();
+            $this->addFlash('success', 'Employée ajoutée avec success!');
 
-            return $this->redirectToRoute('employe_show', array('idEmp' => $employe->getIdemp()));
+            return $this->redirectToRoute('employe_new', array('idEmp' => $employe->getIdemp()));
         }
 
         return $this->render('employe/new.html.twig', array(

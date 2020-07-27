@@ -143,19 +143,20 @@ class PresenceController extends Controller
     /**
      * Creates a new presence entity.
      *
-     * @Route("/api/new/{idMarche}/{idEmp}/{etat}/{date}", name="presence_api_new")
-     * @Route("/api/agent/new/{idMarche}/{idAgent}/{etat}/{date}", name="presence_agent_api_new")
+     * @Route("/api/new/{idMarche}/{idEmp}/{etat}/{date}/{type}", name="presence_api_new")
+     * @Route("/api/agent/new/{idMarche}/{idAgent}/{etat}/{date}/{type}", name="presence_agent_api_new")
      * @Method({"GET", "POST"})
      */
-    public function newPresenceAction($idMarche , $idEmp=null , $etat , $date ,$idAgent=null){
+    public function newPresenceAction($idMarche , $idEmp=null , $etat , $date , $type ,$idAgent=null){
         if ( $idAgent){
 
             $em = $this->getDoctrine()->getManager();
             $presence = new Presence();
             $presenceDate = new \DateTime($date);
-            $emp = $em->getRepository(Agent_de_rotation::class)->find($idAgent);
+            $emp = $em->getRepository(Employe::class)->find($idAgent);
             $marche = $em->getRepository(Marche::class)->find($idMarche);
             $presence->setIdMarche($marche);
+            $presence->setType($type);
             $presence->setIdAgent($emp);
             $presence->setEtat($etat);
             $presence->setDate($presenceDate);
@@ -177,6 +178,7 @@ class PresenceController extends Controller
             $presence->setIdMarche($marche);
             $presence->setIdEmp($emp);
             $presence->setEtat($etat);
+            $presence->setType($type);
             $presence->setDate($presenceDate);
 
             $em->persist($presence);
@@ -187,87 +189,6 @@ class PresenceController extends Controller
         }
 
 
-    }
-
-    /**
-     * Creates a new presence entity.
-     *
-     * @Route("/api/presence/{idMarche}/{idEmp}/{date}", name="total_presence_par_employe_par_mois")
-     * @Method({"GET"})
-     */
-    public function PresenceParMoisAction($idMarche,$date,$idEmp){
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-
-        $query = $entityManager->createQuery(
-            'SELECT count(p) AS NBR , p.etat , e.nom , e.prenom , e.idEmp
-    FROM AppBundle:Presence p
-    inner join p.idEmp e
-    WHERE p.idMarche = :idMarche and p.date LIKE :date and p.etat = 1 and e.idEmp = :idEmp
-    GROUP BY p.idEmp , p.etat
-    '
-        )->setParameter('idMarche', $idMarche)
-            ->setParameter('date', $date.'%')
-        ->setParameter('idEmp', $idEmp);
-
-        $tab = array();
-        $list = $query->getResult();
-
-        foreach ( $list as $p ){
-            $tab[] = [
-                'idEmp' => $p['idEmp'],
-                'etat'=>$p['etat'],
-                'total'=>$p['NBR']
-            ];
-
-
-        }
-
-
-        return new JsonResponse($tab);
-    }
-
-
-    /**
-     * Creates a new presence entity.
-     *
-     * @Route("/api/absence/{idMarche}/{idEmp}/{date}", name="total_absence_par_employe_par_mois")
-     * @Method({"GET"})
-     */
-    public function AbsenceParMoisAction($idMarche,$date,$idEmp){
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-
-        $query = $entityManager->createQuery(
-            'SELECT count(p) AS NBR , p.etat , e.nom , e.prenom , e.idEmp
-    FROM AppBundle:Presence p
-    inner join p.idEmp e
-    WHERE p.idMarche = :idMarche and p.date LIKE :date and p.etat = 0 and e.idEmp = :idEmp
-    GROUP BY p.idEmp , p.etat
-    '
-        )->setParameter('idMarche', $idMarche)
-            ->setParameter('date', $date.'%')
-            ->setParameter('idEmp', $idEmp);
-
-        $tab = array();
-        $list = $query->getResult();
-
-        foreach ( $list as $p ){
-            $tab[] = [
-                'idEmp' => $p['idEmp'],
-                'nom'=>$p['nom'],
-                'prenom'=>$p['prenom'],
-                'etat'=>$p['etat'],
-                'total'=>$p['NBR']
-            ];
-
-
-        }
-
-
-        return new JsonResponse($tab);
     }
 
 
@@ -314,6 +235,48 @@ class PresenceController extends Controller
 
     public function Absence($idMarche,$date,$idEmp){
 
+    $entityManager = $this->getDoctrine()->getManager();
+
+
+    $query = $entityManager->createQuery(
+        'SELECT count(p) AS NBR , p.etat , e.nom , e.prenom , e.idEmp
+    FROM AppBundle:Presence p
+    inner join p.idEmp e
+    WHERE p.idMarche = :idMarche and p.date LIKE :date and p.etat = 0 and e.idEmp = :idEmp
+    GROUP BY p.idEmp , p.etat
+    '
+    )->setParameter('idMarche', $idMarche)
+        ->setParameter('date', $date.'%')
+        ->setParameter('idEmp', $idEmp);
+
+    $tab = array();
+    $list = $query->getResult();
+
+    if ($list){
+        return $list[0]['NBR'];
+    }
+
+    /*foreach ( $list as $p ){
+        $tab[] = [
+            'idEmp' => $p['idEmp'],
+            'nom'=>$p['nom'],
+            'prenom'=>$p['prenom'],
+            'etat'=>$p['etat'],
+            'total'=>$p['NBR']
+        ];
+
+
+    }*/
+
+    else {
+        return 0 ;
+    }
+
+
+}
+
+    public function Repos($idMarche,$date,$idEmp){
+
         $entityManager = $this->getDoctrine()->getManager();
 
 
@@ -321,7 +284,7 @@ class PresenceController extends Controller
             'SELECT count(p) AS NBR , p.etat , e.nom , e.prenom , e.idEmp
     FROM AppBundle:Presence p
     inner join p.idEmp e
-    WHERE p.idMarche = :idMarche and p.date LIKE :date and p.etat = 0 and e.idEmp = :idEmp
+    WHERE p.idMarche = :idMarche and p.date LIKE :date and p.etat = 2 and e.idEmp = :idEmp
     GROUP BY p.idEmp , p.etat
     '
         )->setParameter('idMarche', $idMarche)
@@ -354,7 +317,6 @@ class PresenceController extends Controller
 
     }
 
-
     /**
      * totalAbsencePresence.
      *
@@ -364,15 +326,21 @@ class PresenceController extends Controller
     public function TotalPresenceAbsenceParMois($idMarche,$date,$idEmp){
         $em = $this->getDoctrine()->getManager();
         $emp = $em->getRepository(Employe::class)->find($idEmp);
+        $marche  = $em->getRepository(Marche::class)->find($idMarche);
         $totalAbsence = $this->Absence($idMarche,$date,$idEmp);
         $totalPresence = $this->Presence($idMarche,$date,$idEmp);
+        $totalRepos = $this->Repos($idMarche,$date,$idEmp);
+
+        $salaire = $marche->getSpjfixe()*$totalPresence ;
 
         $total = array(
             'nom'=>$emp->getNom(),
             'Prenom'=>$emp->getPrenom(),
             'TotalAbsence'=>$totalAbsence,
             'TotalPresence'=>$totalPresence,
-            'Periode'=>$date
+            'TotalRepos'=>$totalRepos,
+            'Periode'=>$date,
+            'Salaire'=>$salaire
         );
 
         return new JsonResponse($total);

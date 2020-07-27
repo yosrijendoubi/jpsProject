@@ -50,23 +50,28 @@ class Marche
     private $spjchef;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var string
      *
-     * @ORM\ManyToMany(targetEntity="Employe", inversedBy="idMarche")
-     * @ORM\JoinTable(name="employe_marche",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_marche", referencedColumnName="id_marche")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_emp", referencedColumnName="id_emp")
-     *   }
-     * )
+     * @ORM\Column(name="adresse", type="string", length=100, nullable=false)
      */
-    private $idEmp;
+    private $adresse;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tel", type="integer", nullable=false)
+     */
+    private $tel;
 
     /**
      * Constructor
      */
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=100, nullable=false)
+     */
+    private $logo;
     public function __construct()
     {
         $this->idEmp = new \Doctrine\Common\Collections\ArrayCollection();
@@ -158,7 +163,39 @@ class Marche
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * @param string $adresse
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTel()
+    {
+        return $this->tel;
+    }
+
+    /**
+     * @param int $tel
+     */
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getIdEmp()
     {
@@ -166,11 +203,27 @@ class Marche
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $idEmp
+     * @param \Doctrine\Common\Collections\ArrayCollection $idEmp
      */
     public function setIdEmp($idEmp)
     {
         $this->idEmp = $idEmp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
     }
 
 }

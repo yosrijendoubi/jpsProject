@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Agent_de_rotation;
+use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,7 +26,7 @@ class Agent_de_rotationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $agent_de_rotations = $em->getRepository('AppBundle:Agent_de_rotation')->findAll();
+        $agent_de_rotations = $em->getRepository(Employe::class)->findAll();
         $marches = $em->getRepository(Marche::class)->findAll();
 
         return $this->render('agent_de_rotation/index.html.twig', array(

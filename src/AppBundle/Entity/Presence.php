@@ -136,7 +136,7 @@ class Presence
     private $idMarche;
 
     /**
-     * @return \Agent_de_rotation
+     * @return \Employe
      */
     public function getIdAgent()
     {
@@ -144,7 +144,7 @@ class Presence
     }
 
     /**
-     * @param \Agent_de_rotation $idAgent
+     * @param \Employe $idAgent
      */
     public function setIdAgent($idAgent)
     {
@@ -152,14 +152,38 @@ class Presence
     }
 
     /**
-     * @var \Agent_de_rotation
+     * @var \Employe
      *
-     * @ORM\ManyToOne(targetEntity="Agent_de_rotation")
+     * @ORM\ManyToOne(targetEntity="Employe")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_agent_rotation", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_agent_rotation", referencedColumnName="id_emp")
      * })
      */
     private $idAgent;
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=10, nullable=false)
+     */
+    private $type;
 
 
 

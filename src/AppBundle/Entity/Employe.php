@@ -77,21 +77,6 @@ class Employe
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIdMarche()
-    {
-        return $this->idMarche;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\Collection $idMarche
-     */
-    public function setIdMarche($idMarche)
-    {
-        $this->idMarche = $idMarche;
-    }
-    /**
      * @var integer
      *
      * @ORM\Column(name="id_emp", type="integer", nullable=false)
@@ -122,23 +107,35 @@ class Employe
     private $tel;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Marche", mappedBy="idEmp")
+     * @return \Marche
      */
-    private $idMarche;
+    public function getIdMarche()
+    {
+        return $this->idMarche;
+    }
 
     /**
-     * Constructor
+     * @param \Marche $idMarche
      */
-    public function __construct()
+    public function setIdMarche($idMarche)
     {
-        $this->idMarche = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->idMarche = $idMarche;
     }
+
 
     public function __toString()
     {
         return $this->nom;
     }
+
+    /**
+     * @var \Marche
+     *
+     * @ORM\ManyToOne(targetEntity="Marche")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_marche", referencedColumnName="id_marche")
+     * })
+     */
+    private $idMarche;
 }
 
