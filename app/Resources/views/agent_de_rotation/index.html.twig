@@ -5,20 +5,81 @@
 {% endblock %}
 
 {% block main %}
+    <!-- Modal Doublage-->
+    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal Doublage</h5>
+                    <button type="button" class="btn btn-success" onclick="return AddRowdoublage()">
+                        <span aria-hidden="true">+</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="idagentDoublage" type="hidden">
+                    <input id="marcheagentDoublage" type="hidden">
+                    <input id="idmarcheagentDoublage" type="hidden">
+                    <form id="myformDoublage">
+                        <div class="row formAffectationDoublage">
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="dateAffectationDoublage" placeholder="date">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control" name="journuitdoublage">
+
+                                    <option value="nuit">Nuit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="return addAffectationDoublage()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal Rotation</h5>
                     <button type="button" class="btn btn-success" onclick="return AddRow()">
                         <span aria-hidden="true">+</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <input id="idagent" type="hidden">
+                    <input id="marcheagent" type="hidden">
+                    <input id="idmarcheagent" type="hidden">
                         <form id="myform">
+                            <div class="row formAffectation">
+                                 <div class="col-md-3">
+                                     <input type="date" class="form-control" name="dateAffectation" placeholder="date">
+                                 </div>
+                                <div class="col-md-3">
+                        <select class="form-control" name="marche">
+                            {% for marche in marches %}
+                            <option value="{{ marche.idMarche }}">{{ marche.Libellle }}</option>
+                            {%  endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="journuit">
+                            <option value="jour">Jour</option>
+                            <option value="nuit">Nuit</option>
+                        </select>
+                    </div>
+                                <div class="col-md-3">
+                                    <select onchange="return Changement(this)" class="form-control" name="role">
+                                        <option value="rotation">Rotation</option>
+                                    </select>
+                                </div>
+                </div>
 
                         </form>
                 </div>
@@ -34,45 +95,56 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Responsive Hover Table</h3>
-
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table id="example1" class="table table-hover text-nowrap">
                         <thead>
                         <tr>
                             <th>#</th>
                             <th>Nom</th>
                             <th>Prenom</th>
-                            <th>Action</th>
-                            <th>Affectation</th>
+                            <th>Marche Actuelle</th>
+                            <th>Affectation Rotation</th>
+                            <th>Affectation Doublage</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for agent_de_rotation in agent_de_rotations %}
                             <tr>
-                                <td><a href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.id }) }}">{{ agent_de_rotation.id }}</a></td>
+                                <td><a href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}">{{ agent_de_rotation.idEmp }}</a></td>
                                 <td>{{ agent_de_rotation.nom }}</td>
                                 <td>{{ agent_de_rotation.prenom }}</td>
+
+                                <td id="Nommarche{{  agent_de_rotation.idEmp }}">{{ agent_de_rotation.idMarche }}</td>
+
+                                {#<td>
+                                                                    <a title="view this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-eye text-primary" aria-hidden="true"></i> </a>
+                                                                    <a title="edit this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-edit text-primary" aria-hidden="true"></i> </a>
+                                                                    <a title="delete this user" class="btn btn-default btn-sm "> <i class="fa fa-trash text-danger" aria-hidden="true"></i></i> </a>
+                                                                </td> #}
                                 <td>
-                                    <a title="view this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.id }) }}"> <i class="fa fa-eye text-primary" aria-hidden="true"></i> </a>
-                                    <a title="edit this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.id }) }}"> <i class="fa fa-edit text-primary" aria-hidden="true"></i> </a>
-                                    <a title="delete this user" class="btn btn-default btn-sm "> <i class="fa fa-trash text-danger" aria-hidden="true"></i></i> </a>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.id }})">
+                                    {% if agent_de_rotation.idMarche  %}
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
                                         <i class="fa fa-calendar text-success" aria-hidden="true"></i>
                                     </button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}')">
+                                            <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                        </button>
+                                        {% endif %}
                                 </td>
+                                <td> {% if agent_de_rotation.idMarche  %}
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage(this , {{ agent_de_rotation.idEmp  }},'{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
+                                        <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                    </button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage({{ agent_de_rotation.idEmp }})" disabled>
+                                            <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -153,32 +225,109 @@
 </script>
 
 <script>
+function AddRowdoublage(){
+   $("#myformDoublage").append("<br><div class=\"row formAffectationDoublage\">\n"+
+"                            <div class=\"col-md-6\">\n"+
+"                                <input type=\"date\" class=\"form-control\" name=\"dateAffectationDoublage\" placeholder=\"date\">\n"+
+"                            </div>\n"+
+"                            <div class=\"col-md-6\">\n"+
+"                                <select class=\"form-control\" name=\"journuitdoublage\">\n"+
+"                                    <option value=\"nuit\">Nuit</option>\n"+
+"                                </select>\n"+
+"                            </div>\n"+
+"                        </div>");
+
+
+}
+function AddRow(){
+    $("#myform").append("<br><div class=\"row formAffectation\">\n"+
+
+"                                 <div class=\"col-md-3\">\n"+
+"                                     <input type=\"date\" class=\"form-control\" name=\"dateAffectation\" placeholder=\"date\">\n"+
+"                                 </div>\n"+
+"                                <div class=\"col-md-3\">\n"+
+"                        <select class=\"form-control\" name=\"marche\">\n"+
+"                            {% for marche in marches %}\n"+
+"                            <option value=\"{{ marche.idMarche }}\">{{ marche.Libellle }}</option>\n"+
+"                            {%  endfor %}\n"+
+"                        </select>\n"+
+"                    </div>\n"+
+"                    <div class=\"col-md-3\">\n"+
+"                        <select class=\"form-control\" name=\"journuit\">\n"+
+"                            <option value=\"jour\">Jour</option>\n"+
+"                            <option value=\"nuit\">Nuit</option>\n"+
+"                        </select>\n"+
+"                    </div>\n"+
+"<div class=\"col-md-3\">\n"+
+"<select onchange=\"return Changement(this)\" class=\"form-control\" name=\"role\">\n"+
+"<option value=\"rotation\">Rotation</option>\n"+
+"</select>\n"+
+"</div>\n"+
+"                </div>");
+}
 
 $('#exampleModalCenter').on('hidden.bs.modal', function (e) {
   $("#myform").empty();
+  AddRow();
 })
-function openModal(idAgent){
+function openModal(idAgent , marcheagent ,idmarcheagent){
     $('#exampleModalCenter').on('show.bs.modal', function (e ) {
   $("#idagent").val(idAgent);
+  $("#marcheagent").val(marcheagent);
+  $("#idmarcheagent").val(idmarcheagent);
 });
+
     $('#exampleModalCenter').modal('show');
 }
-function AddRow(){
-    $("#myform").append("<br><div class=\"formAffectation form-row\">\n"+
-"                                <div class=\"col\">\n"+
-"                                    <input type=\"date\" class=\"form-control\" name=\"dateAffectation\" placeholder=\"Date\">\n"+
-"                                </div>\n"+
-"                                <div class=\"col\">\n"+
-"                                    <select class=\"form-control\" name=\"marche\" placeholder=\"Marche\">\n"+
-"                                        {% for marche in marches %}\n"+
-"                                            <option value=\"{{ marche.idMarche }}\">{{ marche.libellle }}</option>\n"+
-"                                        {% endfor %}\n"+
-"                                    </select>\n"+
-"                                </div>\n"+
-"\n"+
-"                            </div>");
+
+$('#exampleModalCenter2').on('hidden.bs.modal', function (e) {
+  $("#myformDoublage").empty();
+  AddRowdoublage();
+})
+function openModalDoublage(mySelect , idAgent , marcheagent ,idmarcheagent){
+
+   $('#exampleModalCenter2').on('show.bs.modal', function (e ) {
+  $("#idagentDoublage").val(idAgent);
+   $("#marcheagentDoublage").val(marcheagent);
+  $("#idmarcheagentDoublage").val(idmarcheagent);
+  $("#marcheDoublage").empty();
+  $("#marcheDoublage").append("<option value="+idmarcheagent+">"+marcheagent+"</option>");
+});
+ $('#exampleModalCenter2').modal('show');
 }
 
+function addAffectationDoublage() {
+  $('.formAffectationDoublage').each(function() {
+    var dateAffectation = $(this).find("[name='dateAffectationDoublage']").val();
+    var marche = $("#idmarcheagentDoublage").val();
+    var idagent = $("#idagentDoublage").val();
+    var journuit = 'nuit';
+    var role = 'doublage' ;
+
+    var url = '{{ path("affectation_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'date':'date' , 'type':'type' ,'role':'role'} ) }}';
+                url = url.replace("idMarche", marche);
+                url = url.replace("idAgent", idagent);
+                url = url.replace("date", dateAffectation);
+                url = url.replace("type", journuit);
+                url = url.replace("role", role);
+
+                $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+  });
+}
 
 function addAffectation(){
     $('.formAffectation').each(function() {
@@ -186,12 +335,16 @@ function addAffectation(){
         var dateAffectation = $(this).find("[name='dateAffectation']").val();
         var marche = $(this).find("[name='marche']").val();
         var idagent = $("#idagent").val();
-        alert(idagent);
+        var journuit = $(this).find("[name='journuit']").val();
+        var role = $(this).find("[name='role']").val();
 
-        var url = '{{ path("affectation_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'date':'date'} ) }}';
+
+        var url = '{{ path("affectation_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'date':'date' , 'type':'type' ,'role':'role'} ) }}';
                 url = url.replace("idMarche", marche);
                 url = url.replace("idAgent", idagent);
                 url = url.replace("date", dateAffectation);
+                url = url.replace("type", journuit);
+                url = url.replace("role", role);
 
                 $.ajax({
                     url: url,
@@ -215,9 +368,11 @@ function addAffectation(){
 }
 </script>
 
+<script>
 
 
 
+</script>
 
 
 {% endblock %}

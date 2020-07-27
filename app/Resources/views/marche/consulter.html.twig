@@ -50,43 +50,56 @@
                 <!--Body-->
                 <div id="modalcont" class="modal-body">
                     <div class="table-responsive">
-                        <table id="example1" class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nom</th>
-                                <th>Prenom</th>
-                                <th>Present</th>
-                                <th>Absent</th>
-                                <th>type</th>
+                            <table id="example1" class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>Prenom</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Repos</th>
+                                    <th>Jour / Nuit</th>
+                                    <th>type</th>
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for emp in listEmp %}
-                                <tr id="validation{{ emp.idEmp  }}">
-                                    <td id="{{ emp.idEmp }}">#</td>
-                                    <td>{{ emp.nom }}</td>
-                                    <td>{{ emp.prenom }}</td>
-                                    <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="1"/></td>
-                                    <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="0"/></td>
-                                    <td></td>
                                 </tr>
+                                </thead>
+                                <tbody>
+                                {% for emp in listEmp %}
+                                    <tr id="validation{{ emp.idEmp  }}">
+                                        <td id="{{ emp.idEmp }}">{{ emp.idEmp }}</td>
+                                        <td>{{ emp.nom }}</td>
+                                        <td>{{ emp.prenom }}</td>
+                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="1"/></td>
+                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="0"/></td>
+                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="2"/></td>
+                                        <td><select class="form-control" id="journuit{{ emp.idEmp  }}">
+                                                <option value="jour">Jour</option>
+                                                <option value="nuit">Nuit</option>
+                                            </select></td>
+                                        <td></td>
+                                    </tr>
 
-                            {% endfor %}
-                            {% for affectation in affectations %}
-                                <tr id="validationagent{{ affectation.idAgent.id  }}">
-                                    <td id="{{ affectation.idAgent.id  }}">#</td>
-                                    <td>{{ affectation.idAgent.nom  }}</td>
-                                    <td>{{ affectation.idAgent.prenom }}</td>
-                                    <td><input type="checkbox"  name="agent{{ affectation.idAgent.id  }}" value="1"/></td>
-                                    <td><input type="checkbox" id="agent{{ affectation.idAgent.id  }}" name="agent{{ affectation.idAgent.id  }}" value="0"/></td>
-                                    <td style="color: darkslateblue"><b>Rotation</b></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                                {% endfor %}
+
+                                {% for affection in affectations %}
+                                    <tr style="background-color: #ECE1AE">
+                                        <td id="{{ affection.idAgent.idEmp }}">{{ affection.idAgent.idEmp }}</td>
+                                        <td>{{ affection.idAgent.nom }}</td>
+                                        <td>{{ affection.idAgent.prenom }}</td>
+                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="1"/></td>
+                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="0"/></td>
+                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2"/></td>
+                                        <td><select class="form-control" id="agentjournuit{{ affection.idAgent.idEmp  }}">
+                                                <option value="{{affection.type}}">{{affection.type}}</option>
+                                            </select></td>
+                                        <td style="color: darkslateblue"><b>{{ affection.role }}</b></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
 
                 </div>
                 <!--Footer-->
@@ -122,29 +135,62 @@
                                 <th>Prenom</th>
                                 <th>Present</th>
                                 <th>Absent</th>
+                                <th>Repos</th>
+                                <th>Jour / Nuit</th>
+                                <th>Role</th>
 
                             </tr>
                             </thead>
                             <tbody>
                             {% for p in todayPresence %}
-                                {% if p.IdAgent %}
-
-                                    {% else %}
+                                {% if p.idAgent %}
+                                    <tr onchange="return latest(this)">
+                                        <td id="{{ p.idAgent.idEmp }}">{{ p.idAgent.idEmp }}</td>
+                                        <td>{{ p.idAgent.nom }}</td>
+                                        <td>{{ p.idAgent.prenom }}</td>
+                                        {% if p.etat == 1 %}
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" checked/></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                        {%  elseif p.etat == 0  %}
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" checked/></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                        {% else %}
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" checked/></td>
+                                        {% endif %}
+                                        <td><select class="form-control" id="agentjournuit{{ p.idAgent.idEmp  }}">
+                                                <option value="{{p.type}}">{{p.type}}</option>
+                                            </select></td>
+                                        <td></td>
+                                    </tr>
+                                {% else %}
                                         <tr onchange="return latest(this)">
-                                            <td id="{{ p.idEmp.idEmp }}">{{ loop.index }}</td>
+                                            <td id="{{ p.idEmp.idEmp }}">{{ p.idEmp.idEmp }}</td>
                                             <td>{{ p.idEmp.nom }}</td>
                                             <td>{{ p.idEmp.prenom }}</td>
                                             {% if p.etat == 1 %}
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1" checked/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
-
-                                            {%  else %}
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" /></td>
+                                            {%  elseif p.etat == 0  %}
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" checked/></td>
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" /></td>
+                                            {% else %}
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
+                                                <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" checked/></td>
                                             {% endif %}
+                                            <td><select class="form-control" id="journuit{{ p.idEmp.idEmp  }}">
+                                                    <option value="{{p.type}}">{{p.type}}</option>
+                                                </select></td>
+                                            <td></td>
                                         </tr>
-                                {% endif %}
 
+                                {% endif %}
 
                             {% endfor %}
                             </tbody>
@@ -190,7 +236,7 @@
                                             <div class="card">
                                                 <div class="card-header border-transparent">
                                                     <label><b>Date : </b></label>
-                                                    <input id="taherDate" value="{{ datee}}" class="form-group col-md-6" type="date" />
+                                                    <input id="taherDate" value="{{ datee}}" class="form-group col-md-6" type="date" max='{{ "now"|date("Y-m-d") }}' />
 
                                                     {% if todayPresence is empty %}
 
@@ -215,42 +261,62 @@
                                                                 <th>Nom</th>
                                                                 <th>Prenom</th>
                                                                 <th>Etat</th>
-                                                                <th>Type</th>
+                                                                <th>Jour / Nuit</th>
+                                                                <th>Role</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
                                                             {% for p in todayPresence %}
                                                                 {% if p.idAgent %}
-                                                                    <tr>
-                                                                        <td>{{ loop.index }}</td>
-                                                                        <td>{{ p.idAgent.nom }}</td>
-                                                                        <td>{{ p.idAgent.prenom }}</td>
+                                                                    <tr style="background-color: #ECE1AE">
+                                                                        <td>{{ p.idAgent.idEmp }}</td>
+                                                                        <td style="font-size: 20px">{{ p.idAgent.nom }}</td>
+                                                                        <td style="font-size: 20px">{{ p.idAgent.prenom }}</td>
 
                                                                         {% if  p.etat == 1 %}
-                                                                            <td><span class="badge badge-success">Present</span></td>
+                                                                            <td style="font-size: 20px"><span class="badge badge-success">Present</span></td>
 
+                                                                        {% elseif  p.etat == 0 %}
+                                                                            <td style="font-size: 20px"><span class="badge badge-danger">Absent</span></td>
                                                                         {% else  %}
-                                                                            <td><span class="badge badge-danger">Absent</span></td>
+                                                                            <td style="font-size: 20px"><span class="badge badge-warning">Repos</span></td>
                                                                         {% endif %}
-
-                                                                        <td><b style="color: darkslateblue">Rotation</b></td>
+                                                                        {% if p.type == "nuit" %}
+                                                                            <td style="font-size: 20px"><span class="badge badge-dark">{{ p.type }}</span></td>
+                                                                        {% else  %}
+                                                                            <td style="font-size: 20px"><span class="badge badge-info">{{ p.type }}</span></td>
+                                                                        {% endif %}
+                                                                        <td style="color: darkslateblue"><b>
+                                                                                {% for aff in affectations %}
+                                                                                    {% if aff.idAgent == p.idAgent %}
+                                                                                    {{ aff.role }}
+                                                                        {% endif %}
+                                                                                {% endfor %}
+                                                                            </b></td>
                                                                     </tr>
                                                                 {% else %}
                                                                     <tr>
-                                                                        <td>{{ loop.index }}</td>
-                                                                        <td>{{ p.idEmp.nom }}</td>
-                                                                        <td>{{ p.idEmp.prenom }}</td>
+                                                                        <td>{{ p.idEmp.idEmp }}</td>
+                                                                        <td style="font-size: 20px">{{ p.idEmp.nom }}</td>
+                                                                        <td style="font-size: 20px">{{ p.idEmp.prenom }}</td>
 
                                                                         {% if  p.etat == 1 %}
-                                                                            <td><span class="badge badge-success">Present</span></td>
+                                                                            <td style="font-size: 20px"><span class="badge badge-success">Present</span></td>
 
+                                                                        {% elseif  p.etat == 0 %}
+                                                                            <td style="font-size: 20px"><span class="badge badge-danger">Absent</span></td>
                                                                         {% else  %}
-                                                                            <td><span class="badge badge-danger">Absent</span></td>
+                                                                            <td style="font-size: 20px"><span class="badge badge-warning">Repos</span></td>
                                                                         {% endif %}
-                                                                        <td></td>
+                                                                        {% if p.type == "nuit" %}
+                                                                        <td style="font-size: 20px"><span class="badge badge-dark">{{ p.type }}</span></td>
+                                                                        {% else  %}
+                                                                            <td style="font-size: 20px"><span class="badge badge-info">{{ p.type }}</span></td>
+                                                                            {% endif %}
+                                                                            <td></td>
                                                                     </tr>
-                                                                    {% endif %}
 
+                                                            {% endif %}
                                                             {% endfor %}
                                                             </tbody>
                                                         </table>
@@ -300,7 +366,7 @@
                                                         <tbody>
                                                         {% for emp in listEmp %}
                                                             <tr id="validation{{ emp.idEmp  }}">
-                                                                <td id="{{ emp.idEmp }}">{{ loop.index }}</td>
+                                                                <td id="{{ emp.idEmp }}">{{ emp.idEmp }}</td>
                                                                 <td>{{ emp.nom }}</td>
                                                                 <td>{{ emp.prenom }}</td>
                                                                 <td><button class="btn btn-primary">Ajouter Avance</button></td>
@@ -344,9 +410,11 @@
                                                 <th>Prenom</th>
                                                 <th>Total Presence</th>
                                                 <th>Total Absence</th>
+                                                <th>Total Repos</th>
+                                                <th>Salaire a payer</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="font-size: 18px">
 
                                             </tbody>
                                         </table>
@@ -683,33 +751,7 @@ var url = '{{ path("consulter_marcher", {'idMarche': 'idMarche' ,  'date': 'date
 function latest(thisRow){
     alert($(thisRow).val());
 }
-function checkValidationRotation(){
-    var test = true ;
-     {% for affectation in affectations %}
-     var i = 0 ;
-      $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function(){
 
-            if($(this).prop("checked") == false){
-                console.log("Checkbox agent is not checked.");
-                i++;
-            }
-
-            else {
-                $("#validationagent{{ affectation.idAgent.id  }}").removeClass('validation');
-            }
-
-        });
-
-      if ( i == 2 ){
-          console.log("validation");
-          $("#validationagent{{ affectation.idAgent.id  }}").addClass('validation');
-          $("#lignemanquante").show();
-          test = false ;
-      }
-     {% endfor %}
-
-     return test;
-}
 function checkValidation(){
     var test = true ;
     {% for emp in listEmp %}
@@ -727,7 +769,7 @@ function checkValidation(){
 
         });
 
-      if ( i == 2 ){
+      if ( i == 3 ){
           console.log("validation");
           $("#validation{{ emp.idEmp  }}").addClass('validation');
           $("#lignemanquante").show();
@@ -738,102 +780,77 @@ function checkValidation(){
 
      return test;
 }
+
 function EnregisterAbsenceAgentRotation(){
-     var test = true ;
-     var test2 = checkValidation();
-     {% for affectation in affectations %}
-     var i = 0 ;
-      $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function(){
-
-            if($(this).prop("checked") == false){
-                console.log("Checkbox agent is not checked.");
-                i++;
-            }
-
-            else {
-                $("#validationagent{{ affectation.idAgent.id  }}").removeClass('validation');
-            }
-
-        });
-
-      if ( i == 2 ){
-          console.log("validation");
-          $("#validationagent{{ affectation.idAgent.id  }}").addClass('validation');
-          $("#lignemanquante").show();
-          test = false ;
-      }
-     {% endfor %}
-
-     if (( test == true ) && (test2 == true)){
-
             {% for affectation in affectations %}
-     $("input:checkbox[name='agent{{ affectation.idAgent.id }}']").each(function()
+     $("input:checkbox[name='agent{{ affectation.idAgent.idEmp }}']").each(function()
 {
     if($(this).is(':checked')){
-        var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date'} ) }}';
+               var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date' ,'type':'type'} ) }}';
                 url = url.replace("idMarche", {{ idMarche }});
-                url = url.replace("idAgent", {{ affectation.idAgent.id }});
+                url = url.replace("idAgent", {{ affectation.idAgent.idEmp }});
                 url = url.replace("etat", $(this).val());
                 url = url.replace("date", $("#taherDate").val());
+                url = url.replace("type", $( "#agentjournuit{{ affectation.idAgent.idEmp }} option:selected" ).val());
                 $.ajax({
                     url: url,
-
                     success: function(data) {
-
                     },
                     error: function() {
                         // show alert or something
                     },
-
                     complete: function(){
-
                     }
                 });
     }
-
 })
 {% endfor %}
-       }
+
 }
+
 function EnregisterAbsenceAgentNormal(){
 
 
-     var test = checkValidation();
-     var test2 = checkValidationRotation();
+     //var test = checkValidation();
 
-     if (( test == true ) && (test2== true)){
+
+
     $("#modal-xl").hide();
             {% for emp in listEmp %}
      $("input:checkbox[name='scales{{ emp.idEmp }}']").each(function()
 {
     if($(this).is(':checked')){
-        var url = '{{ path("presence_api_new", {'idMarche': 'idMarche' ,  'idEmp': 'idEmp' , 'etat': 'etat' , 'date':'date'} ) }}';
+        var url = '{{ path("presence_api_new", {'idMarche': 'idMarche' ,  'idEmp': 'idEmp' , 'etat': 'etat' , 'date':'date' ,'type':'type'} ) }}';
                 url = url.replace("idMarche", {{ idMarche }});
                 url = url.replace("idEmp", {{ emp.idEmp  }});
                 url = url.replace("etat", $(this).val());
                 url = url.replace("date", $("#taherDate").val());
+                url = url.replace("type", $( "#journuit{{ emp.idEmp }} option:selected" ).val());
+
+
                 $.ajax({
                     url: url,
 
                     success: function(data) {
-
+                        location.reload();
                     },
                     error: function() {
                         // show alert or something
                     },
 
                     complete: function(){
-                        location.reload();
+
                     }
                 });
+
     }
 
 })
 {% endfor %}
-       }
+
 }
     function EnregisterAbsence(){
-     {% if affectations %}
+          {% if affectations %}
         EnregisterAbsenceAgentRotation();
       {% endif %}
         EnregisterAbsenceAgentNormal();
@@ -865,11 +882,13 @@ table.clear().draw();
 
                         if ($.trim(data)){
                              var rowNode = table.row.add( [
-            {{ loop.index }},
+            {{ emp.idEmp  }},
             data.nom,
             data.Prenom,
             data.TotalPresence,
-            data.TotalAbsence
+            data.TotalAbsence,
+            data.TotalRepos,
+            data.Salaire+" DT"
         ] ).draw( false );
 
                          }
