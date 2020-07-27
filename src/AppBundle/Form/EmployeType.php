@@ -3,8 +3,10 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class EmployeType extends AbstractType
 {
@@ -13,7 +15,7 @@ class EmployeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom')->add('prenom')->add('tel')->add('idMarche');
+        $builder->add('nom')->add('prenom')->add('tel')->add('RIB')->add('NumCNSS')->add('Vetements', TextareaType::class)->add('imageFile',VichImageType::class)->add('idMarche');
     }/**
      * {@inheritdoc}
      */

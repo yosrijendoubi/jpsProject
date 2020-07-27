@@ -27,6 +27,7 @@
             <td>{{ employe.nom }}</td>
             <td>{{ employe.prenom }} </td>
             <td>{{ employe.tel }}</td>
+            <td> <img src="{{ asset('images/employe/' ~ employe.imageName) }}" style="height: 150px;width: 150px"></td>
             <td>  <a href="{{ path('employe_delete',{ 'idEmp': employe.idEmp }) }}"> Supprimer</a> </td>
             <td>  <a href="{{ path('employe_edit',{ 'idEmp': employe.idEmp }) }}"> Modifier</a> </td>
         </tr>
