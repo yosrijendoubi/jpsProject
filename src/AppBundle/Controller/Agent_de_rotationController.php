@@ -26,7 +26,7 @@ class Agent_de_rotationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $agent_de_rotations = $em->getRepository(Employe::class)->findAll();
+        $agent_de_rotations = $em->getRepository(Employe::class)->findBy(array('status'=>'1'));
         $marches = $em->getRepository(Marche::class)->findAll();
 
         return $this->render('agent_de_rotation/index.html.twig', array(

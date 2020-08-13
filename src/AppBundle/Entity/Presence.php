@@ -33,7 +33,7 @@ class Presence
      *
      * @ORM\Column(name="etat", type="integer", nullable=false)
      */
-    private $etat = '0';
+    private $etat = 0;
 
     /**
      * @var \Employe
@@ -177,6 +177,22 @@ class Presence
         $this->type = $type;
     }
 
+    /**
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
 
     /**
      * @var string
@@ -184,6 +200,13 @@ class Presence
      * @ORM\Column(name="type", type="string", length=10, nullable=false)
      */
     private $type;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", length=10, nullable=true)
+     */
+    private $role;
 
 
 

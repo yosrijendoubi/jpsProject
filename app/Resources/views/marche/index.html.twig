@@ -3,15 +3,24 @@
 {% block main %}
     <!-- Main content -->
     <section class="content">
-
-        <!-- Default box -->
         <div class="card card-solid">
             <div class="card-body pb-0">
-                <div class="row d-flex align-items-stretch">
+                <div class="form-group">
+                    <form method="POST" action="{{path('marche_index')}}">
+                        <div class="input-group md-form form-sm form-2 pl-0">
 
-                    {% for marche in marches %}
+                            <input class="form-control my-0 py-1 lime-border" type="text" placeholder="Search" aria-label="Search" name="marche">
+                            <div class="input-group-append">
+                                <button type="submit" class="input-group-text lime lighten-2" id="basic-text1"><i class="fas fa-search text-grey" aria-hidden="true"></i></button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="row d-flex align-items-stretch">
+                    {% for marche in pagination %}
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-                            <div class="card bg-light">
+                            <div style="border:solid; border-color: rgb(2 2 3 / 13%)" class="card bg-light">
                                 <div class="card-header text-muted border-bottom-0">
                                     Informations
                                 </div>
@@ -26,17 +35,17 @@
                                             </ul>
                                         </div>
                                         <div class="col-5 text-center">
-                                            <img src="{{ marche.logo }}" alt="" class="img-circle img-fluid">
+                                            <img src="{{ vich_uploader_asset(marche, 'imageFile') }}" class="img-circle img-fluid" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a href="#" class="btn btn-sm bg-teal">
-                                            <i class="fas fa-comments"></i>
+                                        <a href="{{ path('marche_edit' , {'idMarche' : marche.idMarche }) }}" class="btn btn-sm bg-teal">
+                                            <i class="fas fa-pen"></i>
                                         </a>
                                         <a href="{{ path('consulter_marcher', {'idMarche': marche.idMarche ,'date': "now"|date("Y-m-d") })}}" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-user"></i> Consulter
+                                            <i class="fas fa-eye"></i> Consulter
                                         </a>
                                     </div>
                                 </div>
@@ -47,25 +56,24 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <nav aria-label="Contacts Page Navigation">
-                    <ul class="pagination justify-content-center m-0">
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">6</a></li>
-                        <li class="page-item"><a class="page-link" href="#">7</a></li>
-                        <li class="page-item"><a class="page-link" href="#">8</a></li>
-                    </ul>
-                </nav>
-            </div>
+                {# display navigation #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>            </div>
             <!-- /.card-footer -->
         </div>
         <!-- /.card -->
 
 
 
+
     </section>
     <!-- /.content -->
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+$("#presence-nav-link").addClass('active');
+</script>
 {% endblock %}

@@ -3,9 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Avance;
+use AppBundle\Entity\Employe;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Avance controller.
@@ -25,9 +29,10 @@ class AvanceController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $avances = $em->getRepository('AppBundle:Avance')->findAll();
-
+        $agent_de_rotations = $em->getRepository(Employe::class)->findBy(array('status'=>'1'));
         return $this->render('avance/index.html.twig', array(
             'avances' => $avances,
+            'agent_de_rotations'=>$agent_de_rotations
         ));
     }
 
@@ -132,5 +137,66 @@ class AvanceController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Ajouter a avance entity.
+     *
+     * @Route("/api/ajouter/{idEmp}/{montant}", name="ajouter_avance")
+     * @Method("GET")
+     */
+    public function AddAvanceAction($idEmp,$montant){
+        $em = $this->getDoctrine()->getManager();
+        $emp = $em->getRepository(Employe::class)->find($idEmp);
+        $avance = new Avance();
+        $avance->setIdEmp($emp) ;
+        $avance->setMontant($montant);
+        $avance->setDate(new \DateTime());
+
+        $em->persist($avance);
+        $em->flush();
+
+        return new Response('ok');
+    }
+
+    /**
+     * list avance
+     *
+     * @Route("/api/list/{idEmp}", name="get_avance")
+     * @Method("GET")
+     */
+    public function ListAvanceAction($idEmp){
+        $em = $this->getDoctrine()->getManager();
+        $list = $em->getRepository(Avance::class)->findBy(array('idEmp'=>$idEmp));
+        $tab = array() ;
+        if ( $list ){
+            foreach ($list as $av){
+                $tab[] = [
+                    'idAvance'=>$av->getId(),
+                    'date'=>$av->getDate()->format('Y-m-d'),
+                    'montant'=>$av->getMontant()
+                ];
+            }
+        }
+        return new JsonResponse($tab);
+    }
+
+
+    /**
+     * delete avance
+     *
+     * @Route("/api/delete/{idAvance}", name="supprimer_avance")
+     * @Method("GET")
+     */
+    public function SupprimerAvanceAction($idAvance){
+        $em = $this->getDoctrine()->getManager();
+        $av = $em->getRepository(Avance::class)->find($idAvance);
+
+        $em->remove($av);
+
+        $em->flush();
+
+        return new Response("success");
+
     }
 }

@@ -6,6 +6,8 @@ use AppBundle\Entity\Affectation_Agent_Rotation;
 use AppBundle\Entity\Employe;
 use AppBundle\Entity\Marche;
 use AppBundle\Entity\Presence;
+use Doctrine\Common\Collections\ArrayCollection;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,16 +32,69 @@ class MarcheController extends Controller
      * @Route("/", name="marche_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(PaginatorInterface $paginator, Request $request)
     {
+
+
+        $em = $this->getDoctrine()->getManager();
+       $marches = $em->getRepository('AppBundle:Marche')->findAll();
+       if ( $request->isMethod('POST')){
+           $libellle = $request->get('marche');
+           $dql   = "SELECT m FROM AppBundle:Marche m where m.libellle = :libelle";
+           $query = $em->createQuery($dql)
+           ->setParameter('libelle', $libellle);
+       }
+
+       else {
+           $dql   = "SELECT m FROM AppBundle:Marche m";
+           $query = $em->createQuery($dql);
+       }
+
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        return $this->render('marche/index.html.twig', array(
+            'marches' => $marches,
+            'pagination' => $pagination
+        ));
+    }
+
+    /**
+     * Lists all employe entities.
+     *
+     * @Route("/list", name="marche_index2")
+     * @Method("GET")
+     */
+    public function index2Action(Request $request)
+    {
+        $marche = new Marche();
+        $form = $this->createForm('AppBundle\Form\MarcheType', $marche);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($marche);
+            $em->flush();
+            $this->addFlash('success', 'Marche ajoutée avec success!');
+
+            return $this->redirectToRoute('marche_index2');
+        }
         $em = $this->getDoctrine()->getManager();
 
         $marches = $em->getRepository('AppBundle:Marche')->findAll();
 
-        return $this->render('marche/index.html.twig', array(
+        return $this->render('marche/index2.html.twig', array(
             'marches' => $marches,
+            'form' => $form->createView()
+
         ));
     }
+
+
 
     /**
      * Creates a new marche entity.
@@ -97,6 +152,7 @@ class MarcheController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('warning', 'Marche modifié avec success!');
 
             return $this->redirectToRoute('marche_edit', array('idMarche' => $marche->getIdmarche()));
         }
@@ -156,7 +212,26 @@ class MarcheController extends Controller
 
         $marche = $em->getRepository(Marche::class)->find($idMarche);
 
-        $listEmp  = $em->getRepository(Employe::class)->findBy(array('idMarche'=>$marche));
+        $listEmp  = $em->getRepository(Employe::class)->findBy(array('idMarche'=>$marche , 'status'=>'1'));
+
+        $Check = $em->createQuery('SELECT a FROM AppBundle:Affectation_Agent_Rotation a WHERE a.date LIKE :date and a.idMarche != :idMarche and a.role = :role')
+            ->setParameter('date',$date)
+            ->setParameter('idMarche',$idMarche)
+            ->setParameter('role','rotation')
+            ->getResult();
+        $listCheck = new ArrayCollection() ;
+
+        foreach ($Check as $c){
+            $listCheck->add($c->getIdAgent());
+        }
+
+        foreach ($listEmp as $key => $emp){
+          if ($listCheck->contains($emp)){
+              unset($listEmp[$key]);
+
+          }
+
+        }
 
         if ( $date == null ){
             $todayPresence = $this->getDoctrine()
@@ -170,6 +245,15 @@ class MarcheController extends Controller
                 ->createQuery('SELECT a FROM AppBundle:Affectation_Agent_Rotation a WHERE a.date LIKE CURRENT_DATE() and a.idMarche = :idMarche')
                 ->setParameter('idMarche',$idMarche)
                 ->getResult();
+
+            foreach ($affectations as $key => $a){
+                if ($a->getIdAgent()->getStatus()== 0 ){
+                    unset($affectations[$key]);
+
+                }
+
+            }
+
 
         }
 
@@ -187,6 +271,14 @@ class MarcheController extends Controller
                 ->setParameter('date',$date)
                 ->setParameter('idMarche',$idMarche)
                 ->getResult();
+
+            foreach ($affectations as $key => $a){
+                if ($a->getIdAgent()->getStatus()== 0 ){
+                    unset($affectations[$key]);
+
+                }
+
+            }
         }
 
 
@@ -196,6 +288,7 @@ class MarcheController extends Controller
 
             'datee'=> $date,
             'idMarche'=>$idMarche,
+            'marche'=>$marche,
             'listEmp' => $listEmp,
             'todayPresence'=>$todayPresence,
             'affectations'=>$affectations
@@ -224,6 +317,24 @@ class MarcheController extends Controller
 
 
         return new JsonResponse($formatted);
+    }
+
+
+    /**
+     * delete marche.
+     *
+     * @Route("/supprimer/{idMarche}", name="supprimer_marche")
+     * @Method("DELETE")
+     */
+    public function SupprimerMarcheAction($idMarche){
+        $em = $this->getDoctrine()->getManager();
+        $marche = $em->getRepository(Marche::class)->find($idMarche);
+
+        $em->remove($marche);
+
+        $em->flush();
+
+        return new Response('ok');
     }
 
 }

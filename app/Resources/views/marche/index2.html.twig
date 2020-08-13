@@ -1,0 +1,283 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+{% block head %}
+    {{ parent() }}
+
+    <style>
+        .highlight {
+            background-color: #5E7607;
+            color: white;
+        }
+
+        .modal-confirm {
+            color: #636363;
+            width: 355px;
+            display: block;
+        }
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+            display: block;
+        }
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+        .modal-confirm .modal-footer {
+            border: none;
+            display: block;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+        .modal-confirm .modal-footer a {
+            color: #999;
+        }
+        .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #f15e5e;
+        }
+        .modal-confirm .icon-box i {
+            color: #f15e5e;
+            font-size: 46px;
+            display: inline-block;
+            margin-top: 13px;
+        }
+        .modal-confirm .btn {
+            color: #fff;
+            border-radius: 4px;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+            outline: none !important;
+        }
+        .modal-confirm .btn-info {
+            background: #c1c1c1;
+        }
+        .modal-confirm .btn-info:hover, .modal-confirm .btn-info:focus {
+            background: #a8a8a8;
+        }
+        .modal-confirm .btn-danger {
+            background: #f15e5e;
+        }
+        .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+            background: #ee3535;
+        }
+        .trigger-btn {
+            display: inline-block;
+            margin: 100px auto;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+
+
+    <!-- Modal Ajouter -->
+    <div class="modal fade" id="ModalAjout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nouveau Marche</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form, { 'attr': {'class': 'center_div'} }) }}
+                    {{ form_errors(form) }}
+
+
+
+                    <div>
+                        {{ form_row(form.libellle) }}
+
+                    </div>
+
+                    <div>
+                        {{ form_row(form.nbrrepos) }}
+                    </div>
+
+                    <div>
+                        {{ form_row(form.spjfixe) }}
+
+                    </div>
+
+                    <div>
+                        {{ form_row(form.spjchef) }}
+                    </div>
+
+                    <div>
+                        {{ form_row(form.adresse) }}
+
+                    </div>
+
+                    <div>
+                        {{ form_row(form.tel) }}
+
+                    </div>
+
+                    <div>
+                        {{ form_row(form.imageFile) }}
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </div>
+                    <h4 class="modal-title">Voulez vous vraiment suppriemer ce marche ?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+
+                    <div style="display: inline-block" id="cancelCommande"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <center><h2>List des marches</h2></center>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="container">
+        <div class="row">
+
+            <!-- LIST -->
+            <div class=col-md-12>
+
+                <form id="form-list-client">
+
+                    <div style="float: right" class="pull-right">
+                        <a style="color: white" class="btn btn-default-btn-xs btn-success" data-toggle="modal" data-target="#ModalAjout"><i class="fa fa-plus-circle"></i> Ajouter</a>
+                    </div>
+                    <table id="ListMarche" class="table table-bordered table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th>Code Marche</th>
+                            <th>Libelle</th>
+                            <th>Actions</th>
+                        </tr>
+
+                        </thead>
+                        <tbody id="form-list-client-body">
+                        {% for marche in marches %}
+                            <tr>
+                                <td>{{ marche.idMarche }}</td>
+                                <td>{{ marche.libellle }}</td>
+                                <td>
+                                    <a title="edit this user" href="{{ path('marche_edit' , { idMarche : marche.idMarche }) }}" class="btn btn-default btn-sm "> <i class="fa fa-edit text-primary"></i> </a>
+                                    <a title="delete this user" class="btn btn-default btn-sm " onclick="return ShowDeleteConfirmation({{ marche.idMArche }})"> <i class="fa fa-trash text-danger"></i> </a>
+
+                                    <a title="check credit" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-duplicate text-danger"></i> </a>
+                                    <a title="generate invoice" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-level-up bg-success"></i> </a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </form>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+$(document).ready( function () {
+    $("#marche-nav-link").addClass('active');
+    $("#ListMarche").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "paging": false,
+      "info":false
+    });});
+</script>
+<script>
+
+function ShowDeleteConfirmation(idEmp) {
+ $('#cancelCommande').html("<button onclick='return DeleteEmploye("+idEmp+")' type=\"button\" class=\"btn btn-danger\">Delete</button>");
+
+$('#myModal').modal('show');
+}
+
+function DeleteEmploye(idEmp){
+var url = '{{ path("supprimer_marche", {'idMarche': 'idMarche'} ) }}';
+                url = url.replace("idMarche", idEmp);
+                $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                      setTimeout(function(){
+location.reload();
+}, 1000);
+                    }
+                });
+}
+</script>
+
+{% endblock %}

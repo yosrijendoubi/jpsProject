@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Avance
  *
- * @ORM\Table(name="avance", indexes={@ORM\Index(name="fk_emp", columns={"id_emp"}), @ORM\Index(name="fk_marche", columns={"id_marche"})})
+ * @ORM\Table(name="avance", indexes={@ORM\Index(name="fk_emp", columns={"id_emp"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AvanceRepository")
  */
 class Avance
@@ -30,16 +30,6 @@ class Avance
      * })
      */
     private $idEmp;
-
-    /**
-     * @var \Marche
-     *
-     * @ORM\ManyToOne(targetEntity="Marche")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_marche", referencedColumnName="id_marche")
-     * })
-     */
-    private $idMarche;
 
     /**
      * @var float
@@ -88,30 +78,6 @@ class Avance
     public function getIdEmp()
     {
         return $this->idEmp;
-    }
-
-    /**
-     * Set idMarche
-     *
-     * @param integer $idMarche
-     *
-     * @return Avance
-     */
-    public function setIdMarche($idMarche)
-    {
-        $this->idMarche = $idMarche;
-
-        return $this;
-    }
-
-    /**
-     * Get idMarche
-     *
-     * @return int
-     */
-    public function getIdMarche()
-    {
-        return $this->idMarche;
     }
 
     /**

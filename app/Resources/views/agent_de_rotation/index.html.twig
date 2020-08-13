@@ -2,15 +2,278 @@
 
 {% block head %}
     {{ parent() }}
+
+    <style>
+        .sk-folding-cube {
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            -webkit-transform: rotateZ(45deg);
+            transform: rotateZ(45deg);
+        }
+
+        .sk-folding-cube .sk-cube {
+            float: left;
+            width: 50%;
+            height: 50%;
+            position: relative;
+            -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+        .sk-folding-cube .sk-cube:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: lightgoldenrodyellow;
+            -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+            animation: sk-foldCubeAngle 2.4s infinite linear both;
+            -webkit-transform-origin: 100% 100%;
+            -ms-transform-origin: 100% 100%;
+            transform-origin: 100% 100%;
+        }
+        .sk-folding-cube .sk-cube2 {
+            -webkit-transform: scale(1.1) rotateZ(90deg);
+            transform: scale(1.1) rotateZ(90deg);
+        }
+        .sk-folding-cube .sk-cube3 {
+            -webkit-transform: scale(1.1) rotateZ(180deg);
+            transform: scale(1.1) rotateZ(180deg);
+        }
+        .sk-folding-cube .sk-cube4 {
+            -webkit-transform: scale(1.1) rotateZ(270deg);
+            transform: scale(1.1) rotateZ(270deg);
+        }
+        .sk-folding-cube .sk-cube2:before {
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+        .sk-folding-cube .sk-cube3:before {
+            -webkit-animation-delay: 0.6s;
+            animation-delay: 0.6s;
+        }
+        .sk-folding-cube .sk-cube4:before {
+            -webkit-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+        }
+        @-webkit-keyframes sk-foldCubeAngle {
+            0%, 10% {
+                -webkit-transform: perspective(140px) rotateX(-180deg);
+                transform: perspective(140px) rotateX(-180deg);
+                opacity: 0;
+            } 25%, 75% {
+                  -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+                  opacity: 1;
+              } 90%, 100% {
+                    -webkit-transform: perspective(140px) rotateY(180deg);
+                    transform: perspective(140px) rotateY(180deg);
+                    opacity: 0;
+                }
+        }
+
+        @keyframes sk-foldCubeAngle {
+            0%, 10% {
+                -webkit-transform: perspective(140px) rotateX(-180deg);
+                transform: perspective(140px) rotateX(-180deg);
+                opacity: 0;
+            } 25%, 75% {
+                  -webkit-transform: perspective(140px) rotateX(0deg);
+                  transform: perspective(140px) rotateX(0deg);
+                  opacity: 1;
+              } 90%, 100% {
+                    -webkit-transform: perspective(140px) rotateY(180deg);
+                    transform: perspective(140px) rotateY(180deg);
+                    opacity: 0;
+                }
+        }
+    </style>
+    <style>
+        .highlight {
+            background-color: #5E7607;
+            color: white;
+        }
+
+        .modal-confirm {
+            color: #636363;
+            width: 355px;
+            display: block;
+        }
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+            display: block;
+        }
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+        .modal-confirm .modal-footer {
+            border: none;
+            display: block;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+        .modal-confirm .modal-footer a {
+            color: #999;
+        }
+        .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #f15e5e;
+        }
+        .modal-confirm .icon-box i {
+            color: #f15e5e;
+            font-size: 46px;
+            display: inline-block;
+            margin-top: 13px;
+        }
+        .modal-confirm .btn {
+            color: #fff;
+            border-radius: 4px;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+            outline: none !important;
+        }
+        .modal-confirm .btn-info {
+            background: #c1c1c1;
+        }
+        .modal-confirm .btn-info:hover, .modal-confirm .btn-info:focus {
+            background: #a8a8a8;
+        }
+        .modal-confirm .btn-danger {
+            background: #f15e5e;
+        }
+        .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+            background: #ee3535;
+        }
+        .trigger-btn {
+            display: inline-block;
+            margin: 100px auto;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
-    <!-- Modal Doublage-->
+    <div class="modal fade" id="NoAffectations" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+
+            <div class="modal-body alert alert-danger" role="alert">
+
+                <center><i class="fa fa-ban"></i><span></span> Aucune Affecations</center>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </div>
+                    <h4 class="modal-title">Vous etes sur ?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez vous vraiment supprimer cette affectation ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                    <div style="display: inline-block" id="cancelCommande"></div>
+                    <!-- <button type="button" class="btn btn-danger">Delete</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal List-->
+    <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">List Affectation Rotation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="ListAffectation" class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Marche</th>
+                                <th>Type</th>
+                                <th>Role</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal Doublage</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Affectation Doublage</h5>
                     <button type="button" class="btn btn-success" onclick="return AddRowdoublage()">
                         <span aria-hidden="true">+</span>
                     </button>
@@ -36,7 +299,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="return addAffectationDoublage()">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="return addAffectationDoublage()">Confirmer</button>
                 </div>
             </div>
         </div>
@@ -47,7 +310,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal Rotation</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Affectation Rotation</h5>
                     <button type="button" class="btn btn-success" onclick="return AddRow()">
                         <span aria-hidden="true">+</span>
                     </button>
@@ -85,106 +348,113 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="return addAffectation()">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="return addAffectation()">Confirmer</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Responsive Hover Table</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table id="example1" class="table table-hover text-nowrap">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nom</th>
-                            <th>Prenom</th>
-                            <th>Marche Actuelle</th>
-                            <th>Affectation Rotation</th>
-                            <th>Affectation Doublage</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for agent_de_rotation in agent_de_rotations %}
-                            <tr>
-                                <td><a href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}">{{ agent_de_rotation.idEmp }}</a></td>
-                                <td>{{ agent_de_rotation.nom }}</td>
-                                <td>{{ agent_de_rotation.prenom }}</td>
+    <div id="error" class="alert alert-danger" role="alert" style="display: none;">
 
-                                <td id="Nommarche{{  agent_de_rotation.idEmp }}">{{ agent_de_rotation.idMarche }}</td>
+</div>
+    <div id="done" class="alert alert-success" role="alert" style="display: none;">
 
-                                {#<td>
-                                                                    <a title="view this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-eye text-primary" aria-hidden="true"></i> </a>
-                                                                    <a title="edit this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-edit text-primary" aria-hidden="true"></i> </a>
-                                                                    <a title="delete this user" class="btn btn-default btn-sm "> <i class="fa fa-trash text-danger" aria-hidden="true"></i></i> </a>
-                                                                </td> #}
-                                <td>
-                                    {% if agent_de_rotation.idMarche  %}
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
-                                        <i class="fa fa-calendar text-success" aria-hidden="true"></i>
-                                    </button>
-                                    {% else %}
-                                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}')">
-                                            <i class="fa fa-calendar text-success" aria-hidden="true"></i>
-                                        </button>
-                                        {% endif %}
-                                </td>
-                                <td> {% if agent_de_rotation.idMarche  %}
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage(this , {{ agent_de_rotation.idEmp  }},'{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
-                                        <i class="fa fa-calendar text-success" aria-hidden="true"></i>
-                                    </button>
-                                    {% else %}
-                                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage({{ agent_de_rotation.idEmp }})" disabled>
-                                            <i class="fa fa-calendar text-success" aria-hidden="true"></i>
-                                        </button>
-                                    {% endif %}
-                                </td>
-
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
     </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Affectation</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table id="example1" class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Code Employe</th>
+                                    <th>Nom</th>
+                                    <th>Prenom</th>
+                                    <th>Marche Actuelle</th>
+                                    <th>Affectation Rotation</th>
+                                    <th>Affectation Doublage</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for agent_de_rotation in agent_de_rotations %}
+                                    <tr>
+                                        <td><a>{{ agent_de_rotation.idEmp }}</a></td>
+                                        <td>{{ agent_de_rotation.nom }}</td>
+                                        <td>{{ agent_de_rotation.prenom }}</td>
+
+                                        <td id="Nommarche{{  agent_de_rotation.idEmp }}">{{ agent_de_rotation.idMarche }}</td>
+
+                                        {#<td>
+                                                                            <a title="view this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_show', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-eye text-primary" aria-hidden="true"></i> </a>
+                                                                            <a title="edit this user" class="btn btn-default btn-sm " href="{{ path('agent_de_rotation_edit', { 'id': agent_de_rotation.idEmp }) }}"> <i class="fa fa-edit text-primary" aria-hidden="true"></i> </a>
+                                                                            <a title="delete this user" class="btn btn-default btn-sm "> <i class="fa fa-trash text-danger" aria-hidden="true"></i></i> </a>
+                                                                        </td> #}
+                                        <td>
+                                            {% if agent_de_rotation.idMarche  %}
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
+                                                    <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return ListAffectationRotation({{ agent_de_rotation.idEmp }} , 'rotation')">
+                                                    <i class="fa fa-list text-info" aria-hidden="true"></i>
+                                                </button>
+                                            {% else %}
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModal({{ agent_de_rotation.idEmp }} , '{{ agent_de_rotation.idMarche }}')">
+                                                    <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return ListAffectationRotation({{ agent_de_rotation.idEmp }} , 'rotation')">
+                                                    <i class="fa fa-list text-info" aria-hidden="true"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                        <td> {% if agent_de_rotation.idMarche  %}
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage(this , {{ agent_de_rotation.idEmp  }},'{{ agent_de_rotation.idMarche }}' , {{ agent_de_rotation.idMarche.idMarche }})">
+                                                    <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return ListAffectationRotation({{ agent_de_rotation.idEmp }} , 'doublage')">
+                                                    <i class="fa fa-list text-info" aria-hidden="true"></i>
+                                                </button>
+                                            {% else %}
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" onclick="return openModalDoublage({{ agent_de_rotation.idEmp }})" disabled>
+                                                    <i class="fa fa-calendar text-success" aria-hidden="true"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+
+    </section>
+
 
 {% endblock %}
 
 
 {% block javascript %}
 {{ parent() }}
-<script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
-
-
-<!-- Bootstrap 4 -->
-<script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="{{ asset('admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 <!-- InputMask -->
 <script src="{{ asset('admin/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('admin/plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
 <!-- date-range-picker -->
 <script src="{{ asset('admin/plugins/daterangepicker/daterangepicker.js') }}"></script>
-<!-- bootstrap color picker -->
-<script src="{{ asset('admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{ asset('admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-<!-- Bootstrap Switch -->
-<script src="{{ asset('admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('admin/dist/js/demo.js') }}"></script>
+
 
 <!-- DataTables -->
 <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -192,13 +462,23 @@
 <script src="{{ asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.21/api/sum().js"></script>
     <!-- Page specific script -->
     <script>
-
+$("#affectation-nav-link").addClass('active');
     $(document).ready( function () {
     $("#example1").DataTable({
       "responsive": true,
       "autoWidth": false,
+      "paging": false,
+      "info":false
     });
 
 
@@ -316,6 +596,17 @@ function addAffectationDoublage() {
 
                     success: function(data) {
 
+                        if ( data == "Error"){
+
+                           $("#error").html("<i class=\"fa fa-exclamation-triangle\" aria-hidden=\"true\"></i> Deja Affecté");
+                            $("#error").show();
+                        }
+
+                        else {
+                           $("#done").html("<i class=\"fa fa-check\" aria-hidden=\"true\"></i> Affecté avec success");
+                           $("#done").show();
+
+                        }
 
                     },
                     error: function() {
@@ -323,7 +614,10 @@ function addAffectationDoublage() {
                     },
 
                     complete: function(){
-
+                      $('#exampleModalCenter2').modal('hide');
+                      setTimeout(function(){
+  location.reload();
+}, 1000);
                     }
                 });
   });
@@ -350,15 +644,28 @@ function addAffectation(){
                     url: url,
 
                     success: function(data) {
+                        if ( data == "Error"){
 
+                           $("#error").html("<i class=\"fa fa-exclamation-triangle\" aria-hidden=\"true\"></i> Deja Affecté");
+                            $("#error").show();
+                        }
+
+                        else {
+                           $("#done").html("<i class=\"fa fa-check\" aria-hidden=\"true\"></i> Affecté avec success");
+                           $("#done").show();
+
+                        }
 
                     },
                     error: function() {
-                        // show alert or something
+
                     },
 
                     complete: function(){
-
+                        $('#exampleModalCenter').modal('hide');
+                      setTimeout(function(){
+                        location.reload();
+}, 1000);
                     }
                 });
 
@@ -370,8 +677,87 @@ function addAffectation(){
 
 <script>
 
+function DeleteAffectation(idAffectation) {
+
+   var url = '{{ path("remove_affectation", {'idAffectation': 'idAffectation'} ) }}';
+                url = url.replace("idAffectation", idAffectation);
+
+                $.ajax({
+                    url: url,
+                    success: function(data) {
+                      location.reload();
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+                    complete: function(){
+                    }
+                });
+}
+
+function ListAffectationRotation(emp , role){
+var idEmp = emp ;
+
+var url = '{{ path("get_affectation", {'idEmp': 'idEmp' , 'role':'role'} ) }}';
+                url = url.replace("idEmp", emp);
+                 url = url.replace("role", role);
+                $.ajax({
+                    url: url,
+                    beforeSend:function(){
+
+                    },
+                    success: function(data) {
+                        if ($.trim(data)){
+
+                            $.each(data, function(i) {
+                            $('#ListAffectation > tbody:last').append('<tr><td>'+i+'</td>' +
+                             '<td>' + data[i].idMarche+ '</td>'+
+                              '<td>' + data[i].type+ '</td>'+
+                              '<td>' + data[i].role+ '</td>'+
+                              '<td>' + data[i].date+ '</td>'+
+                              '<td><button onclick="return showDeleteConfirmation('+data[i].idAffectation+')"type="button" class="btn btn-outline-danger"><i class="fa fa-ban"></i><span> </span>Cancel</button></td>'+
+                              {# '<td> <button class="btn btn-danger" onclick="return DeleteAffectation('+data[i].idAffectation+')">Supprimer</button></td>'+#}
+                               '</tr>');
+                                });
 
 
+                            $('#exampleModalCenter3').modal('show');
+
+                        }
+
+                        else {
+                             $('#NoAffectations').modal('show');
+                 $('#NoAffectations').on('shown.bs.modal', function (e2) {
+
+                     setTimeout(function(){ $('#NoAffectations').modal('hide'); }, 1000);
+                 })
+                        }
+                    },
+                   error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    },
+                    complete: function(){
+
+                    }
+                });
+
+
+}
+
+function showDeleteConfirmation(idAffectation) {
+    $('#exampleModalCenter3').modal('hide');
+            $('#cancelCommande').html("<button onclick='return DeleteAffectation("+idAffectation+")' type=\"button\" class=\"btn btn-danger\">Delete</button>");
+            $('#myModal').modal('show')
+
+        }
+
+</script>
+
+
+<script>
+ $('#exampleModalCenter3').on('hidden.bs.modal', function (e ) {
+$("#ListAffectation tbody > tr").remove();
+ });
 </script>
 
 

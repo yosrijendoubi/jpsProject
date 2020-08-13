@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Employe;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Employe controller.
@@ -20,14 +22,37 @@ class EmployeController extends Controller
      * @Route("/", name="employe_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(PaginatorInterface $paginator, Request $request)
     {
+        $employe = new Employe();
+        $form = $this->createForm('AppBundle\Form\EmployeType', $employe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($employe);
+            $em->flush();
+            $this->addFlash('success', 'Employée ajoutée avec success!');
+
+            return $this->redirectToRoute('employe_index');
+        }
         $em = $this->getDoctrine()->getManager();
 
         $employes = $em->getRepository('AppBundle:Employe')->findAll();
+        $dql   = "SELECT e FROM AppBundle:Employe e";
+        $query = $em->createQuery($dql);
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('employe/index.html.twig', array(
             'employes' => $employes,
+            'pagination' => $pagination,
+            'form' => $form->createView()
+
         ));
     }
 
@@ -88,6 +113,7 @@ class EmployeController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('warning', 'Employe modifié avec success!');
 
             return $this->redirectToRoute('employe_edit', array('idEmp' => $employe->getIdemp()));
         }
@@ -133,5 +159,39 @@ class EmployeController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Deletes a employe entity.
+     *
+     * @Route("/supprimer/{idEmp}", name="employe_supprimer")
+     * @Method("DELETE")
+     */
+    public function SupprimerEmployeAction($idEmp){
+        $em = $this->getDoctrine()->getManager();
+
+        $emp = $em->getRepository(Employe::class)->find($idEmp);
+
+        $em->remove($emp);
+
+        $em->flush();
+
+        return new Response('Supprimer');
+
+    }
+
+
+    /**
+     * set stats to an employe .
+     *
+     * @Route("/enableDisable/{idEmp}/{status}", name="set_status_employe")
+     * @Method("GET")
+     */
+    public function setStatusAction($idEmp , $status){
+        $em = $this->getDoctrine()->getManager();
+        $emp = $em->getRepository(Employe::class)->find($idEmp);
+        $emp->setStatus($status);
+        $em->flush();
+        return new Response('ok');
     }
 }

@@ -1,29 +1,67 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block head %}
+    {{ parent() }}
+
+    <style>
+        .center_div{
+            margin: 0 auto;
+            width:80% /* value of your choice which suits your alignment */
+        }
+    </style>
+{% endblock %}
 {% block main %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    <div style="margin: 100px 200px 100px 200px">
-        <div class="spec ">
-            <h3>Creation d'un Employee</h3>
-            <div class="ser-t">
-                <b></b>
-                <span><i></i></span>
-                <b class="line"></b>
-            </div>
-        </div>
-        <div class="spec ">
-            {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <br>
-           <center><input   class="btn btn-success btn-lg"  type="submit" value="Ajouter" /> </center>
-            {{ form_end(form) }}
+    <h2 style="text-align: center">Nouveau Employe</h2>
+    {{ form_start(form, { 'attr': {'class': 'center_div'} }) }}
+    {{ form_errors(form) }}
 
 
-        </div>
+
+    <div>
+        {{ form_row(form.nom) }}
+
     </div>
+
+    <div>
+        {{ form_row(form.prenom) }}
+    </div>
+
+    <div>
+        {{ form_row(form.situationFamiliale) }}
+
+    </div>
+
+    <div>
+        {{ form_row(form.cin) }}
+    </div>
+
+    <div>
+        {{ form_row(form.adresse) }}
+
+    </div>
+
+    <div>
+        {{ form_row(form.email) }}
+
+    </div>
+
+    <div>
+        {{ form_row(form.tel) }}
+    </div>
+
+    <div>
+        {{ form_row(form.cnss) }}
+    </div>
+
+    <div>
+        {{ form_row(form.idMarche) }}
+    </div>
+
+    <center><button class=" btn btn-success" type="submit">Submit</button></center>
+
+    {{ form_end(form) }}
+
+
+
 {% endblock %}

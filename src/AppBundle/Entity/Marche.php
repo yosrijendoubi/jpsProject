@@ -3,12 +3,20 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Marche
  *
  * @ORM\Table(name="marche")
  * @ORM\Entity
+ */
+
+/**
+ * @ORM\Entity
+ * @Vich\Uploadable
  */
 class Marche
 {
@@ -52,26 +60,21 @@ class Marche
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="string", length=100, nullable=false)
+     * @ORM\Column(name="adresse", type="string", length=100, nullable=true)
      */
     private $adresse;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="tel", type="integer", nullable=false)
+     * @ORM\Column(name="tel", type="integer", nullable=true)
      */
     private $tel;
+
 
     /**
      * Constructor
      */
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="logo", type="string", length=100, nullable=false)
-     */
-    private $logo;
     public function __construct()
     {
         $this->idEmp = new \Doctrine\Common\Collections\ArrayCollection();
@@ -211,20 +214,49 @@ class Marche
     }
 
     /**
-     * @return string
+     * @ORM\Column(type="string", length=255 , nullable=true)
+     * @var string
      */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
+    private $image;
 
     /**
-     * @param string $logo
+     * @Assert\File(
+     *     maxSize = "2048k",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Veuillez télécharger une image valide"
+     * )
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image" ,nullable=true)
+     * @var File
      */
-    public function setLogo($logo)
+    private $imageFile;
+
+    // ...
+
+    public function setImageFile(File $image = null)
     {
-        $this->logo = $logo;
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+
     }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
 
 }
 

@@ -1,21 +1,75 @@
 {% extends 'base.html.twig' %}
+{% form_theme edit_form 'bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block head %}
+    {{ parent() }}
+
+    <style>
+        .center_div{
+            margin: 0 auto;
+            width:80% /* value of your choice which suits your alignment */
+        }
+    </style>
+{% endblock %}
 {% block main %}
-    <h1>Employe edit</h1>
+    <center><h1>Editer Employé</h1></center>
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {{ form_start(edit_form, { 'attr': {'class': 'center_div'} }) }}
+    {{ form_errors(edit_form) }}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+
+    <div>
+        {{ form_row(edit_form.nom) }}
+
+    </div>
+
+    <div>
+        {{ form_row(edit_form.prenom) }}
+    </div>
+
+    <div>
+        {{ form_row(edit_form.situationFamiliale) }}
+
+    </div>
+
+    <div>
+        {{ form_row(edit_form.cin) }}
+    </div>
+
+    <div>
+        {{ form_row(edit_form.adresse) }}
+
+    </div>
+
+    <div>
+        {{ form_row(edit_form.dateEmbauche) }}
+
+    </div>
+    <div>
+        {{ form_row(edit_form.email) }}
+
+    </div>
+
+    <div>
+        {{ form_row(edit_form.tel) }}
+    </div>
+
+    <div>
+        {{ form_row(edit_form.cnss) }}
+    </div>
+
+    <div>
+        {{ form_row(edit_form.idMarche) }}
+    </div>
+    <center><div>
+            <a type="button" class="btn btn-outline-success" href="{{ path('employe_index') }}">Retour a la liste</a>
+            <button type="submit" class="btn btn-primary">Editer</button>
+        </div></center>
+
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('employe_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
 {% endblock %}

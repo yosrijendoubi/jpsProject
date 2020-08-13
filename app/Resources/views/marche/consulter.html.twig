@@ -11,8 +11,212 @@
 
         }
     </style>
+    <style>
+        .highlight {
+            background-color: #5E7607;
+            color: white;
+        }
+
+        .modal-confirm {
+            color: #636363;
+            width: 355px;
+            display: block;
+        }
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+            display: block;
+        }
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+        .modal-confirm .modal-footer {
+            border: none;
+            display: block;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+        .modal-confirm .modal-footer a {
+            color: #999;
+        }
+        .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid royalblue;
+        }
+        .modal-confirm .icon-box i {
+            color: royalblue;
+            font-size: 46px;
+            display: inline-block;
+            margin-top: 13px;
+        }
+        .modal-confirm .btn {
+            color: #fff;
+            border-radius: 4px;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+            outline: none !important;
+        }
+        .modal-confirm .btn-info {
+            background: royalblue;
+        }
+        .modal-confirm .btn-info:hover, .modal-confirm .btn-info:focus {
+            background: #a8a8a8;
+        }
+        .modal-confirm .btn-danger {
+            background: #f15e5e;
+        }
+        .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+            background: #ee3535;
+        }
+        .trigger-btn {
+            display: inline-block;
+            margin: 100px auto;
+        }
+    </style>
 {% endblock %}
 {% block main %}
+
+    <!-- MODAL Salaire -->
+    <div class="modal fade" id="ModalSalaire" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Details Salaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="SalaireDetail" class="modal-body">
+                    <div class="table-responsive">
+
+                        <table id="example9" class="table table-bordered table-striped m-0 ">
+                            <thead class="thead">
+                            <tr>
+                                <th>Salaire Marche Act</th>
+                                <th>Salaire Rotation</th>
+                                <th>Salaire Doublage</th>
+                                <th>Salaire Repos</th>
+                                <th>Total Avance</th>
+                            </tr>
+                            </thead>
+                            <tbody style="font-size: 18px">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL -->
+    <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="HeaderDetail" class="modal-header">
+                    <h5 class="modal-title" id="LabelModelDetail"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="example8" class="table table-bordered table-striped m-0 ">
+                            <thead class="thead">
+                            <tr>
+                                <th>Marche</th>
+                                <th>Date</th>
+                                <th>Role</th>
+                                <th>Type</th>
+                            </tr>
+                            </thead>
+                            <tbody style="font-size: 18px">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-info" role="alert">
+
+                            </div>
+                            <p style="color:white">&nbsp;Chargement...</p>
+                        </div>
+                    </div>
+
+
+
+
+        </div>
+    </div>
+
+    <!-- Confirmation Modifier  -->
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                    </div>
+                    <h4 class="modal-title">Voulez vous vraiment modifier la presence ?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+
+                    <button onclick="return ConfirmerModification()" type="button" class="btn btn-info">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Chart Modal -->
     <div class="modal fade" id="modal-chart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -66,13 +270,20 @@
                                 </thead>
                                 <tbody>
                                 {% for emp in listEmp %}
+                                    {% set TotalRepos =  render(controller(
+                                        'AppBundle:Presence:Repos', { 'idMarche': idMarche , 'date': "now"|date("Y-m") , 'idEmp': emp.idEmp }
+                                        ))  %}
                                     <tr id="validation{{ emp.idEmp  }}">
                                         <td id="{{ emp.idEmp }}">{{ emp.idEmp }}</td>
                                         <td>{{ emp.nom }}</td>
                                         <td>{{ emp.prenom }}</td>
                                         <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="1"/></td>
-                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="0"/></td>
-                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="2"/></td>
+                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="0" /></td>
+                                        {% if TotalRepos >= marche.nbrrepos %}
+                                        <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="2" disabled="true"/></td>
+                                        {% else %}
+                                            <td><input type="checkbox"  name="scales{{ emp.idEmp  }}" value="2"/></td>
+                                        {% endif %}
                                         <td><select class="form-control" id="journuit{{ emp.idEmp  }}">
                                                 <option value="jour">Jour</option>
                                                 <option value="nuit">Nuit</option>
@@ -83,13 +294,20 @@
                                 {% endfor %}
 
                                 {% for affection in affectations %}
+                                    {% set TotalRepos =  render(controller(
+                                        'AppBundle:Presence:Repos', { 'idMarche': affection.idAgent.idMarche , 'date': "now"|date("Y-m") , 'idEmp': affection.idAgent.idEmp }
+                                        ))  %}
                                     <tr style="background-color: #ECE1AE">
                                         <td id="{{ affection.idAgent.idEmp }}">{{ affection.idAgent.idEmp }}</td>
                                         <td>{{ affection.idAgent.nom }}</td>
                                         <td>{{ affection.idAgent.prenom }}</td>
                                         <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="1"/></td>
                                         <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="0"/></td>
-                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2"/></td>
+                                        {% if TotalRepos >= marche.nbrrepos %}
+                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2" disabled="true"/></td>
+                                        {% else %}
+                                            <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2"/></td>
+                                         {% endif %}
                                         <td><select class="form-control" id="agentjournuit{{ affection.idAgent.idEmp  }}">
                                                 <option value="{{affection.type}}">{{affection.type}}</option>
                                             </select></td>
@@ -144,33 +362,73 @@
                             <tbody>
                             {% for p in todayPresence %}
                                 {% if p.idAgent %}
-                                    <tr onchange="return latest(this)">
-                                        <td id="{{ p.idAgent.idEmp }}">{{ p.idAgent.idEmp }}</td>
-                                        <td>{{ p.idAgent.nom }}</td>
-                                        <td>{{ p.idAgent.prenom }}</td>
-                                        {% if p.etat == 1 %}
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" checked/></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
-                                        {%  elseif p.etat == 0  %}
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" checked/></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
-                                        {% else %}
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
-                                            <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" checked/></td>
-                                        {% endif %}
+                                    {% if p.etat == 3  %}
+                                    <tr class="unagent" style="background-color: red" onchange="return latest(this)">
+                                        <td id="idPresence">{{ p.idPresence }}</td>
+                                        <td style="font-size: 20px">{{ p.idAgent.nom }}</td>
+                                        <td style="font-size: 20px">{{ p.idAgent.prenom }}</td>
+
+                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+
                                         <td><select class="form-control" id="agentjournuit{{ p.idAgent.idEmp  }}">
                                                 <option value="{{p.type}}">{{p.type}}</option>
                                             </select></td>
-                                        <td></td>
+                                        <td style="color: darkslateblue"><b>{{p.role}}</b></td>
                                     </tr>
+                                    {% else %}
+                                        <tr class="unagent" style="background-color: #ECE1AE" onchange="return latest(this)">
+                                            <td id="idPresence">{{ p.idPresence }}</td>
+                                            <td style="font-size: 20px">{{ p.idAgent.nom }}</td>
+                                            <td style="font-size: 20px">{{ p.idAgent.prenom }}</td>
+                                            {% if p.etat == 1 %}
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" checked/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                            {%  elseif p.etat == 0  %}
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" checked/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                            {%  elseif p.etat == 2  %}
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" checked/></td>
+                                            {% endif %}
+                                            <td><select class="form-control" id="agentjournuit{{ p.idAgent.idEmp  }}">
+                                                    <option value="{{p.type}}">{{p.type}}</option>
+                                                </select></td>
+                                            <td style="color: darkslateblue"><b>{{p.role}}</b></td>
+                                        </tr>
+                                    {% endif %}
                                 {% else %}
+                                    {% if p.etat == 3  %}
+                                        <tr style="background-color: red ; color: white " onchange="return latest(this)">
+                                            <td id="idPresence">{{ p.idPresence }}</td>
+                                            <td style="font-size: 20px">{{ p.idEmp.nom }}</td>
+                                            <td style="font-size: 20px">{{ p.idEmp.prenom }}</td>
+
+                                            <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
+                                            <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
+                                            <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" /></td>
+
+                                            <td><select class="form-control" id="journuit{{ p.idEmp.idEmp  }}">
+                                                    {% if p.type == "jour" %}
+                                                    <option value="{{p.type}}">{{p.type}}</option>
+                                                        <option value="nuit">nuit</option>
+                                                    {% else %}
+                                                        <option value="{{p.type}}">{{p.type}}</option>
+                                                        <option value="jour">jour</option>
+                                                    {% endif %}
+                                                </select></td>
+                                            <td></td>
+                                        </tr>
+
+                                    {% else %}
                                         <tr onchange="return latest(this)">
-                                            <td id="{{ p.idEmp.idEmp }}">{{ p.idEmp.idEmp }}</td>
-                                            <td>{{ p.idEmp.nom }}</td>
-                                            <td>{{ p.idEmp.prenom }}</td>
+                                            <td id="idPresence">{{ p.idPresence }}</td>
+                                            <td style="font-size: 20px">{{ p.idEmp.nom }}</td>
+                                            <td style="font-size: 20px">{{ p.idEmp.prenom }}</td>
                                             {% if p.etat == 1 %}
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1" checked/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
@@ -179,17 +437,23 @@
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" checked/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" /></td>
-                                            {% else %}
+                                            {% elseif p.etat == 2 %}
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="1"/></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="0" /></td>
                                                 <td><input type="checkbox" id="scales{{ p.idEmp.idEmp  }}" name="scales{{ p.idEmp.idEmp  }}" value="2" checked/></td>
                                             {% endif %}
                                             <td><select class="form-control" id="journuit{{ p.idEmp.idEmp  }}">
-                                                    <option value="{{p.type}}">{{p.type}}</option>
+                                                    {% if p.type == "jour" %}
+                                                        <option value="{{p.type}}">{{p.type}}</option>
+                                                        <option value="nuit">nuit</option>
+                                                    {% else %}
+                                                        <option value="{{p.type}}">{{p.type}}</option>
+                                                        <option value="jour">jour</option>
+                                                    {% endif %}
                                                 </select></td>
                                             <td></td>
                                         </tr>
-
+                                        {% endif %}
                                 {% endif %}
 
                             {% endfor %}
@@ -213,6 +477,12 @@
         <div class="container-fluid">
 
             <div class="row">
+                <img style="display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;" src="{{ vich_uploader_asset(marche, 'imageFile') }}"/>
+
+
                 <div class="col-12">
                     <div class="card card-primary card-tabs">
                         <div class="card-header p-0 pt-1">
@@ -243,7 +513,7 @@
                                                         <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-xl"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter Presence</button>
 
                                                     {% else  %}
-                                                        <button style="float: right" type="button" class="btn btn-primary col-md-2" data-toggle="modal" data-target="#modal-xl-2"><i class="fa fa-plus" aria-hidden="true"></i> Modifier Presence</button>
+                                                        <button style="float: right" type="button" class="btn btn-primary col-md-2" data-toggle="modal" data-target="#modal-xl-2"><i class="fa fa-pen" aria-hidden="true"></i> Modifier Presence</button>
 
                                                     {% endif %}
                                                     <div class="card-tools">
@@ -257,7 +527,7 @@
                                                         <table id="example2" class="table m-0">
                                                             <thead>
                                                             <tr>
-                                                                <th>#</th>
+                                                                <th>Code Employe</th>
                                                                 <th>Nom</th>
                                                                 <th>Prenom</th>
                                                                 <th>Etat</th>
@@ -268,6 +538,7 @@
                                                             <tbody>
                                                             {% for p in todayPresence %}
                                                                 {% if p.idAgent %}
+                                                                    {% if p.etat != 3 %}
                                                                     <tr style="background-color: #ECE1AE">
                                                                         <td>{{ p.idAgent.idEmp }}</td>
                                                                         <td style="font-size: 20px">{{ p.idAgent.nom }}</td>
@@ -278,8 +549,9 @@
 
                                                                         {% elseif  p.etat == 0 %}
                                                                             <td style="font-size: 20px"><span class="badge badge-danger">Absent</span></td>
-                                                                        {% else  %}
+                                                                        {% elseif p.etat == 2 %}
                                                                             <td style="font-size: 20px"><span class="badge badge-warning">Repos</span></td>
+
                                                                         {% endif %}
                                                                         {% if p.type == "nuit" %}
                                                                             <td style="font-size: 20px"><span class="badge badge-dark">{{ p.type }}</span></td>
@@ -294,27 +566,33 @@
                                                                                 {% endfor %}
                                                                             </b></td>
                                                                     </tr>
+                                                                    {% endif %}
                                                                 {% else %}
-                                                                    <tr>
-                                                                        <td>{{ p.idEmp.idEmp }}</td>
-                                                                        <td style="font-size: 20px">{{ p.idEmp.nom }}</td>
-                                                                        <td style="font-size: 20px">{{ p.idEmp.prenom }}</td>
+                                                                    {% if p.etat != 3 %}
+                                                                        <tr>
+                                                                            <td>{{ p.idEmp.idEmp }}</td>
+                                                                            <td style="font-size: 20px">{{ p.idEmp.nom }}</td>
+                                                                            <td style="font-size: 20px">{{ p.idEmp.prenom }}</td>
 
-                                                                        {% if  p.etat == 1 %}
-                                                                            <td style="font-size: 20px"><span class="badge badge-success">Present</span></td>
+                                                                            {% if  p.etat == 1 %}
+                                                                                <td style="font-size: 20px"><span class="badge badge-success">Present</span></td>
 
-                                                                        {% elseif  p.etat == 0 %}
-                                                                            <td style="font-size: 20px"><span class="badge badge-danger">Absent</span></td>
-                                                                        {% else  %}
-                                                                            <td style="font-size: 20px"><span class="badge badge-warning">Repos</span></td>
-                                                                        {% endif %}
-                                                                        {% if p.type == "nuit" %}
-                                                                        <td style="font-size: 20px"><span class="badge badge-dark">{{ p.type }}</span></td>
-                                                                        {% else  %}
-                                                                            <td style="font-size: 20px"><span class="badge badge-info">{{ p.type }}</span></td>
+                                                                            {% elseif  p.etat == 0 %}
+                                                                                <td style="font-size: 20px"><span class="badge badge-danger">Absent</span></td>
+                                                                            {% elseif p.etat == 2 %}
+                                                                                <td style="font-size: 20px"><span class="badge badge-warning">Repos</span></td>
+
+
+                                                                            {% endif %}
+                                                                            {% if p.type == "nuit" %}
+                                                                                <td style="font-size: 20px"><span class="badge badge-dark">{{ p.type }}</span></td>
+                                                                            {% else  %}
+                                                                                <td style="font-size: 20px"><span class="badge badge-info">{{ p.type }}</span></td>
                                                                             {% endif %}
                                                                             <td></td>
-                                                                    </tr>
+                                                                        </tr>
+                                                                    {% endif %}
+
 
                                                             {% endif %}
                                                             {% endfor %}
@@ -380,7 +658,7 @@
                                             </div>
                                             <!-- /.card-body -->
                                             <div class="card-footer text-center">
-                                                <a href="javascript::">View All Users</a>
+                                                <a href="#">View All Users</a>
                                             </div>
                                             <!-- /.card-footer -->
                                         </div>
@@ -399,7 +677,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button style="float: right" type="button" class="btn btn-success col-md-2" data-toggle="modal" data-target="#modal-chart">Chart</button>
 
                                     <div class="table-responsive">
                                         <table id="example4" class="table table-bordered table-striped m-0 ">
@@ -428,6 +705,17 @@
                 </div>
 
             </div>
+            <center><div  class="d-flex justify-content-center">
+                    <div style="display: none ;  position: fixed;
+  z-index: 1;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;" class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div></center>
 
 
 
@@ -437,37 +725,16 @@
 
 {% block javascript %}
 {{ parent() }}
-<script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
-<!-- jQuery UI -->
-<script src="{{ asset('admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-
-    <script src="{{ asset('admin/plugins/fullcalendar/main.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/fullcalendar-daygrid/main.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/fullcalendar-timegrid/main.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/fullcalendar-interaction/main.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/fullcalendar-bootstrap/main.min.js') }}"></script>
-
-<!-- Bootstrap 4 -->
-<script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="{{ asset('admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
 <!-- InputMask -->
 <script src="{{ asset('admin/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('admin/plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
 <!-- date-range-picker -->
 <script src="{{ asset('admin/plugins/daterangepicker/daterangepicker.js') }}"></script>
-<!-- bootstrap color picker -->
-<script src="{{ asset('admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{ asset('admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-<!-- Bootstrap Switch -->
-<script src="{{ asset('admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('admin/dist/js/demo.js') }}"></script>
+
 
 <!-- DataTables -->
 <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -482,29 +749,20 @@
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.21/api/sum().js"></script>
     <!-- Page specific script -->
     <script>
 
     $(document).ready( function () {
+        $("#presence-nav-link").addClass('active');
     $("#example1").DataTable({
       "responsive": true,
       "autoWidth": false,
+      "paging": false
     });
 
      $("#example2").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-      "info":false
-    });
-
-     $("#example3").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-      "info":false
-    });
-
-      $("#example4").DataTable({
-      dom: 'Bfrtip',
+     dom: 'Bfrtip',
          buttons: [
             {
                 extend: 'pdfHtml5',
@@ -521,178 +779,55 @@
       "responsive": true,
       "autoWidth": false,
       "info":false,
-      "bPaginate": false
+      "paging": false
+    });
+
+     $("#example3").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "paging": false
+    });
+
+     $("#example8").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "paging": false
+    });
+
+
+     $("#example9").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "paging": false
+    });
+
+      $("#example4").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "bPaginate": false,
+      dom: 'Bfrtip',
+         buttons: [
+            {
+                extend: 'pdfHtml5',
+                messageTop: 'PDF created by PDFMake with Buttons for DataTables.',
+                className: 'btn btn-info glyphicon glyphicon-search'
+
+            },
+            {
+                 extend: 'excelHtml5',
+                messageTop: 'PDF created by PDFMake with Buttons for DataTables.',
+                className: 'btn btn-info glyphicon glyphicon-search'
+            }
+        ]
+
     });
 
 } );
-    $(function () {
 
-        /* initialize the external events
-         -----------------------------------------------------------------*/
-        function ini_events(ele) {
-            ele.each(function () {
-
-                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-                // it doesn't need to have a start or end
-                var eventObject = {
-                    title: $.trim($(this).text()) // use the element's text as the event title
-                }
-
-                // store the Event Object in the DOM element so we can get to it later
-                $(this).data('eventObject', eventObject)
-
-                // make the event draggable using jQuery UI
-                $(this).draggable({
-                    zIndex        : 1070,
-                    revert        : true, // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                })
-
-            })
-        }
-
-        ini_events($('#external-events div.external-event'))
-
-        /* initialize the calendar
-         -----------------------------------------------------------------*/
-        //Date for the calendar events (dummy data)
-        var date = new Date()
-        var d    = date.getDate(),
-            m    = date.getMonth(),
-            y    = date.getFullYear()
-
-        var Calendar = FullCalendar.Calendar;
-        var Draggable = FullCalendarInteraction.Draggable;
-
-        var containerEl = document.getElementById('external-events');
-        var checkbox = document.getElementById('drop-remove');
-        var calendarEl = document.getElementById('calendar');
-
-        // initialize the external events
-        // -----------------------------------------------------------------
-
-        new Draggable(containerEl, {
-            itemSelector: '.external-event',
-            eventData: function(eventEl) {
-                console.log(eventEl);
-                return {
-                    title: eventEl.innerText,
-                    backgroundColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
-                    borderColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
-                    textColor: window.getComputedStyle( eventEl ,null).getPropertyValue('color'),
-                };
-            }
-        });
-
-        var calendar = new Calendar(calendarEl, {
-            plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
-            header    : {
-                left  : 'prev,next today',
-                center: 'title',
-                right : 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            'themeSystem': 'bootstrap',
-            //Random default events
-            events    : [
-                {
-                    title          : 'All Day Event',
-                    start          : new Date(y, m, 1),
-                    backgroundColor: '#f56954', //red
-                    borderColor    : '#f56954', //red
-                    allDay         : true
-                },
-                {
-                    title          : 'Long Event',
-                    start          : new Date(y, m, d - 5),
-                    end            : new Date(y, m, d - 2),
-                    backgroundColor: '#f39c12', //yellow
-                    borderColor    : '#f39c12' //yellow
-                },
-                {
-                    title          : 'Meeting',
-                    start          : new Date(y, m, d, 10, 30),
-                    allDay         : false,
-                    backgroundColor: '#0073b7', //Blue
-                    borderColor    : '#0073b7' //Blue
-                },
-                {
-                    title          : 'Lunch',
-                    start          : new Date(y, m, d, 12, 0),
-                    end            : new Date(y, m, d, 14, 0),
-                    allDay         : false,
-                    backgroundColor: '#00c0ef', //Info (aqua)
-                    borderColor    : '#00c0ef' //Info (aqua)
-                },
-                {
-                    title          : 'Birthday Party',
-                    start          : new Date(y, m, d + 1, 19, 0),
-                    end            : new Date(y, m, d + 1, 22, 30),
-                    allDay         : false,
-                    backgroundColor: '#00a65a', //Success (green)
-                    borderColor    : '#00a65a' //Success (green)
-                },
-                {
-                    title          : 'Click for Google',
-                    start          : new Date(y, m, 28),
-                    end            : new Date(y, m, 29),
-                    url            : 'http://google.com/',
-                    backgroundColor: '#3c8dbc', //Primary (light-blue)
-                    borderColor    : '#3c8dbc' //Primary (light-blue)
-                }
-            ],
-            editable  : true,
-            droppable : true, // this allows things to be dropped onto the calendar !!!
-            drop      : function(info) {
-                // is the "remove after drop" checkbox checked?
-                if (checkbox.checked) {
-                    // if so, remove the element from the "Draggable Events" list
-                    info.draggedEl.parentNode.removeChild(info.draggedEl);
-                }
-            }
-        });
-
-        calendar.render();
-        // $('#calendar').fullCalendar()
-
-        /* ADDING EVENTS */
-        var currColor = '#3c8dbc' //Red by default
-        //Color chooser button
-        var colorChooser = $('#color-chooser-btn')
-        $('#color-chooser > li > a').click(function (e) {
-            e.preventDefault()
-            //Save color
-            currColor = $(this).css('color')
-            //Add color effect to button
-            $('#add-new-event').css({
-                'background-color': currColor,
-                'border-color'    : currColor
-            })
-        })
-        $('#add-new-event').click(function (e) {
-            e.preventDefault()
-            //Get value and make sure it is not null
-            var val = $('#new-event').val()
-            if (val.length == 0) {
-                return
-            }
-
-            //Create events
-            var event = $('<div />')
-            event.css({
-                'background-color': currColor,
-                'border-color'    : currColor,
-                'color'           : '#fff'
-            }).addClass('external-event')
-            event.html(val)
-            $('#external-events').prepend(event)
-
-            //Add draggable funtionality
-            ini_events(event)
-
-            //Remove event from text input
-            $('#new-event').val('')
-        })
-    })
     </script>
 
     <script>
@@ -705,7 +840,6 @@
                 maxDate: new Date(new Date().getFullYear(), new Date().getMonth()),
 
     });
-    $('.datetimepicker-input').on('change', function(e){alert("test"); })
 
     $("input[data-bootstrap-switch]").each(function(){
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
@@ -749,7 +883,8 @@ var url = '{{ path("consulter_marcher", {'idMarche': 'idMarche' ,  'date': 'date
 <script>
 
 function latest(thisRow){
-    alert($(thisRow).val());
+
+    $(thisRow).addClass("changed");
 }
 
 function checkValidation(){
@@ -783,15 +918,18 @@ function checkValidation(){
 
 function EnregisterAbsenceAgentRotation(){
             {% for affectation in affectations %}
+               var i= 0 ;
      $("input:checkbox[name='agent{{ affectation.idAgent.idEmp }}']").each(function()
 {
     if($(this).is(':checked')){
-               var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date' ,'type':'type'} ) }}';
+         i++;
+               var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date' ,'type':'type' , 'role':'role'} ) }}';
                 url = url.replace("idMarche", {{ idMarche }});
                 url = url.replace("idAgent", {{ affectation.idAgent.idEmp }});
                 url = url.replace("etat", $(this).val());
                 url = url.replace("date", $("#taherDate").val());
                 url = url.replace("type", $( "#agentjournuit{{ affectation.idAgent.idEmp }} option:selected" ).val());
+                url = url.replace("role", '{{ affectation.role }}');
                 $.ajax({
                     url: url,
                     success: function(data) {
@@ -804,22 +942,40 @@ function EnregisterAbsenceAgentRotation(){
                 });
     }
 })
+
+if(i==0){
+
+    var url = '{{ path("presence_agent_api_new", {'idMarche': 'idMarche' ,  'idAgent': 'idAgent' , 'etat': 'etat' , 'date':'date' ,'type':'type' ,'role':'role'} ) }}';
+                url = url.replace("idMarche", {{ idMarche }});
+                url = url.replace("idAgent", {{ affectation.idAgent.idEmp }});
+                url = url.replace("etat", null);
+                url = url.replace("date", $("#taherDate").val());
+                url = url.replace("type", $( "#agentjournuit{{ affectation.idAgent.idEmp }} option:selected" ).val());
+                url = url.replace("role", '{{ affectation.role }}');
+                $.ajax({
+                    url: url,
+                    success: function(data) {
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+                    complete: function(){
+                    }
+                });
+
+}
 {% endfor %}
 
 }
 
 function EnregisterAbsenceAgentNormal(){
 
-
-     //var test = checkValidation();
-
-
-
-    $("#modal-xl").hide();
             {% for emp in listEmp %}
+            var i= 0 ;
      $("input:checkbox[name='scales{{ emp.idEmp }}']").each(function()
 {
     if($(this).is(':checked')){
+        i++;
         var url = '{{ path("presence_api_new", {'idMarche': 'idMarche' ,  'idEmp': 'idEmp' , 'etat': 'etat' , 'date':'date' ,'type':'type'} ) }}';
                 url = url.replace("idMarche", {{ idMarche }});
                 url = url.replace("idEmp", {{ emp.idEmp  }});
@@ -832,7 +988,7 @@ function EnregisterAbsenceAgentNormal(){
                     url: url,
 
                     success: function(data) {
-                        location.reload();
+                       location.reload();
                     },
                     error: function() {
                         // show alert or something
@@ -846,14 +1002,156 @@ function EnregisterAbsenceAgentNormal(){
     }
 
 })
-{% endfor %}
+
+if (i == 0 ){
+
+    var url = '{{ path("presence_api_new", {'idMarche': 'idMarche' ,  'idEmp': 'idEmp' , 'etat': 'etat' , 'date':'date' ,'type':'type'} ) }}';
+                url = url.replace("idMarche", {{ idMarche }});
+                url = url.replace("idEmp", {{ emp.idEmp  }});
+                url = url.replace("etat", null);
+                url = url.replace("date", $("#taherDate").val());
+                url = url.replace("type", $( "#journuit{{ emp.idEmp }} option:selected" ).val());
+
+
+                $.ajax({
+                    url: url,
+
+                    success: function(data) {
+                      location.reload();
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
 
 }
+{% endfor %}
+            location.reload();
+}
     function EnregisterAbsence(){
+$('#modal-xl').on('hidden.bs.modal', function (e) {
+    $(".row").hide();
+  $("#myModal2").modal('show');
+});
+        $("#modal-xl").modal('hide');
+
+
+
           {% if affectations %}
         EnregisterAbsenceAgentRotation();
       {% endif %}
         EnregisterAbsenceAgentNormal();
+    }
+
+
+    function ShowDetailSalaire(idEmp){
+    var table = $("#example9").DataTable();
+    var str = $("#monthYear").val();
+
+var month = str.substring(0, str.lastIndexOf("/"));
+var year = str.substring(str.lastIndexOf("/") + 1, str.length);
+
+var dateSearch = year+"-"+month;
+
+
+$('#ModalSalaire').modal('show');
+        var url = '{{ path("detail_salaire_par_mois", {'idEmp': 'idEmp' ,  'date': 'date'} ) }}';
+                url = url.replace("date", dateSearch);
+                url = url.replace("idEmp", idEmp);
+
+                 $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+                            var rowNode = table.row.add( [
+           data.TotalMarche+' DT',
+           data.TotalRotation+' DT',
+          data.TotalDoublage+' DT',
+           data.SalaireRepos+' DT',
+           data.TotalAvance + ' DT'
+        ] ).draw( false );
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+
+                 $('#ModalSalaire').on('hidden.bs.modal', function (e) {
+
+
+table
+    .clear()
+    .draw();
+});
+
+    }
+
+    function ShowDetailModal(idEmp , etat , typeModal){
+    $("#LabelModelDetail").html(typeModal);
+    if ( etat == 1){
+            $("#HeaderDetail").css({"background-color":"#28a745" , "color":"white"});
+
+    }
+    else if ( etat == 0 ){
+        $("#HeaderDetail").css({"background-color":"#e10000" , "color":"white"});
+    }
+
+    else {
+         $("#HeaderDetail").css({"background-color":"#e99805" , "color":"white"});
+    }
+    var table = $("#example8").DataTable();
+    var str = $("#monthYear").val();
+
+var month = str.substring(0, str.lastIndexOf("/"));
+var year = str.substring(str.lastIndexOf("/") + 1, str.length);
+
+var dateSearch = year+"-"+month;
+
+
+$('#ModalDetail').modal('show');
+        var url = '{{ path("details_par_mois", {'etat': 'etat' ,  'date': 'date' , 'idEmp':'idEmp'} ) }}';
+                url = url.replace("etat", etat);
+                url = url.replace("date", dateSearch);
+                url = url.replace("idEmp", idEmp);
+
+                 $.ajax({
+                    url: url,
+
+                    success: function(data) {
+$.each(data, function(i) {
+  var rowNode = table.row.add( [
+           data[i].marche,
+           data[i].date,
+           data[i].role,
+           data[i].type
+        ] ).draw( false );
+});
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+
+$('#ModalDetail').on('hidden.bs.modal', function (e) {
+
+
+table
+    .clear()
+    .draw();
+});
     }
 
     function SearchRendement(bout){
@@ -885,10 +1183,10 @@ table.clear().draw();
             {{ emp.idEmp  }},
             data.nom,
             data.Prenom,
-            data.TotalPresence,
-            data.TotalAbsence,
-            data.TotalRepos,
-            data.Salaire+" DT"
+            ' <button class=\"btn btn-success\" onclick=\"return ShowDetailModal({{ emp.idEmp }} , 1 , \'Details Presence\')\">'+data.TotalPresence+'</button>' ,
+            ' <button class=\"btn btn-danger\" onclick=\"return ShowDetailModal({{ emp.idEmp }} , 0 , \'Details Absence\')\">'+data.TotalAbsence+'</button>',
+            ' <button class=\"btn btn-warning\" onclick=\"return ShowDetailModal({{ emp.idEmp }} , 2 , \'Details Repos\')\">'+data.TotalRepos+'</button>',
+            ' <button class=\"btn btn-info\" onclick=\"return ShowDetailSalaire({{ emp.idEmp }})\">'+data.Salaire+' DT</button>'
         ] ).draw( false );
 
                          }
@@ -911,10 +1209,37 @@ table.clear().draw();
                 });
 
                 {% endfor %}
+var url2 = '{{ path("total_salaire", {'date': 'date' , 'idMarche':'idMarche'} ) }}';
+                url2 = url2.replace("date", dateSearch);
+                url2 = url2.replace("idMarche", {{ marche.idMarche }});
+                $.ajax({
+                    url: url2,
+
+                    success: function(data) {
+
+                            if ($.trim(data)){
+                                   var rowNode = table.row.add( [
+            '',
+            '',
+            '',
+            '',
+            '' ,
+            '',
+            'Total : ' + data + ' DT'
+        ] ).draw( false );
 
 
 
+                         }
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
 
+                    complete: function(){
+                        bout.disabled= false;
+                    }
+                });
 }
 
 
@@ -974,6 +1299,69 @@ function poolColors(a) {
         pool.push(dynamicColors());
     }
     return pool;
+}
+</script>
+
+<script>
+function ModifierAbsence() {
+
+    $('#modal-xl-2').modal('hide');
+    $('#myModal').modal('show');
+
+
+}
+
+function ConfirmerModification(){
+    $('.changed').each(function(i) {
+
+   var idPres =  $(this).find('#idPresence').html();
+
+
+   if( $(this).hasClass( "unagent" ) ){
+    $(this).find('input[type=checkbox]').each(function() {
+   if ($(this).is(":checked")) {
+        var url = '{{ path("presence_agent_api_modifier", {'idPresence': 'idPresence' , 'etat': 'etat' } ) }}';
+                url = url.replace("idPresence", idPres);
+                url = url.replace("etat", $(this).val());
+                $.ajax({
+                    url: url,
+                    success: function(data) {
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+                    complete: function(){
+                    }
+                });
+   }
+});
+   }
+   else {
+       var type = $(this).find("option:selected").val();
+
+$(this).find('input[type=checkbox]').each(function() {
+   if ($(this).is(":checked")) {
+
+        var url = '{{ path("presence_api_modifier", {'idPresence': 'idPresence' , 'etat': 'etat' , 'type' :'type' } ) }}';
+                url = url.replace("idPresence", idPres);
+                url = url.replace("etat", $(this).val());
+                url = url.replace("type", type);
+                $.ajax({
+                    url: url,
+                    success: function(data) {
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+                    complete: function(){
+                    }
+                });
+   }
+});
+
+   }
+});
+  location.reload();
 }
 </script>
 

@@ -1,0 +1,324 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+{{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <!-- MODAL Salaire -->
+    <div class="modal fade" id="ModalSalaire" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Details Salaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="SalaireDetail" class="modal-body">
+                    <div class="table-responsive">
+
+                        <table id="example9" class="table table-bordered table-striped m-0 ">
+                            <thead class="thead">
+                            <tr>
+                                <th>Salaire Marche Act</th>
+                                <th>Salaire Rotation</th>
+                                <th>Salaire Doublage</th>
+                                <th>Salaire Repos</th>
+                                <th>Total Avance</th>
+                            </tr>
+                            </thead>
+                            <tbody style="font-size: 18px">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL -->
+    <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="HeaderDetail" class="modal-header">
+                    <h5 class="modal-title" id="LabelModelDetail"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="example8" class="table table-bordered table-striped m-0 ">
+                            <thead class="thead">
+                            <tr>
+                                <th>Marche</th>
+                                <th>Date</th>
+                                <th>Role</th>
+                                <th>Type</th>
+                            </tr>
+                            </thead>
+                            <tbody style="font-size: 18px">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+
+    <div class="container-fluid">
+        <center>
+
+                <div class="form-group">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Choisir le mois : </label>
+                            <div class="input-group md-form form-sm form-2 pl-0">
+                                <input id="Periode" class="form-control my-0 py-1 lime-border" type="month" value='{{ "now"|date("Y-m") }}'>
+                                <div class="input-group-append">
+                                    <button type="button" class="input-group-text lime lighten-2" id="basic-text1" onclick="return AfficherRapport(this)"><i class="fas fa-search text-grey" aria-hidden="true"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    
+                </div>
+
+        </center>
+        <div class="table-responsive">
+            <table id="example4" class="table table-bordered table-striped m-0 ">
+                <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Marché Actuelle</th>
+                    <th>Total Presence</th>
+                    <th>Total Absence</th>
+                    <th>Total Repos</th>
+                    <th>Salaire a payer</th>
+                </tr>
+                </thead>
+                <tbody style="font-size: 18px">
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+$("#rapport-nav-link").addClass('active');
+ $("#example4").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "bPaginate": false,});
+
+ $("#example8").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "info":false,
+      "paging": true
+    });
+</script>
+<script>
+function AfficherRapport(bout) {
+    bout.disabled= true;
+  var dateSearch = $("#Periode").val();
+var table = $("#example4").DataTable();
+table.clear().draw();
+  var url = '{{ path("rapport_par_mois", {'date': 'date'} ) }}';
+                url = url.replace("date", dateSearch);
+                 $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+                            if ($.trim(data)){
+                              $.each(data , function(i) {
+                                  if ( data[i].Marche == 'Non Affecté'){
+                                   var rowNode = table.row.add( [
+            data[i].id,
+            data[i].nom,
+            data[i].Prenom,
+            '<p style="color:red">'+data[i].Marche+'</p>',
+             ' <center><button class=\"btn btn-success\" onclick=\"return ShowDetailModal('+data[i].id+' , 1 , \'Details Presence\')\">'+data[i].TotalPresence+'</button></center>' ,
+            ' <center><button class=\"btn btn-danger\" onclick=\"return ShowDetailModal('+data[i].id+' , 0 , \'Details Absence\')\">'+data[i].TotalAbsence+'</button></center>',
+            ' <center><button class=\"btn btn-warning\" onclick=\"return ShowDetailModal('+data[i].id+' , 2 , \'Details Repos\')\">'+data[i].TotalRepos+'</button></center>',
+            ' <center><button class=\"btn btn-info\" onclick=\"return ShowDetailSalaire('+data[i].id+')\">'+data[i].Salaire+' DT</button></center>'
+        ] ).draw( false );
+                                  }
+                                  else {
+                                   var rowNode = table.row.add( [
+            data[i].id,
+            data[i].nom,
+            data[i].Prenom,
+            data[i].Marche,
+            ' <center><button class=\"btn btn-success\" onclick=\"return ShowDetailModal('+data[i].id+' , 1 , \'Details Presence\')\">'+data[i].TotalPresence+'</button></center>' ,
+            ' <center><button class=\"btn btn-danger\" onclick=\"return ShowDetailModal('+data[i].id+' , 0 , \'Details Absence\')\">'+data[i].TotalAbsence+'</button></center>',
+            ' <center><button class=\"btn btn-warning\" onclick=\"return ShowDetailModal('+data[i].id+' , 2 , \'Details Repos\')\">'+data[i].TotalRepos+'</button></center>',
+            ' <center><button class=\"btn btn-info\" onclick=\"return ShowDetailSalaire('+data[i].id+')\">'+data[i].Salaire+' DT</button></center>'
+        ] ).draw( false );
+
+                                  }
+                              })
+                         }
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+                        bout.disabled= false;
+                    }
+                });
+    var url2 = '{{ path("total_salaire", {'date': 'date'} ) }}';
+                url2 = url2.replace("date", dateSearch);
+                $.ajax({
+                    url: url2,
+
+                    success: function(data) {
+
+                            if ($.trim(data)){
+                                   var rowNode = table.row.add( [
+            '',
+            '',
+            '',
+            '',
+            '' ,
+            '',
+            '',
+            'Total : ' + data + ' DT'
+        ] ).draw( false );
+
+
+
+                         }
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+                        bout.disabled= false;
+                    }
+                });
+}
+
+
+function ShowDetailModal(idEmp , etat , typeModal){
+    $("#LabelModelDetail").html(typeModal);
+    if ( etat == 1){
+            $("#HeaderDetail").css({"background-color":"#28a745" , "color":"white"});
+
+    }
+    else if ( etat == 0 ){
+        $("#HeaderDetail").css({"background-color":"#e10000" , "color":"white"});
+    }
+
+    else {
+         $("#HeaderDetail").css({"background-color":"#e99805" , "color":"white"});
+    }
+    var table = $("#example8").DataTable();
+
+
+var dateSearch = $("#Periode").val();
+
+
+$('#ModalDetail').modal('show');
+        var url = '{{ path("details_par_mois", {'etat': 'etat' ,  'date': 'date' , 'idEmp':'idEmp'} ) }}';
+                url = url.replace("etat", etat);
+                url = url.replace("date", dateSearch);
+                url = url.replace("idEmp", idEmp);
+
+                 $.ajax({
+                    url: url,
+
+                    success: function(data) {
+$.each(data, function(i) {
+  var rowNode = table.row.add( [
+           data[i].marche,
+           data[i].date,
+           data[i].role,
+           data[i].type
+        ] ).draw( false );
+});
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+
+$('#ModalDetail').on('hidden.bs.modal', function (e) {
+
+
+table
+    .clear()
+    .draw();
+});
+    }
+
+     function ShowDetailSalaire(idEmp){
+    var table = $("#example9").DataTable();
+
+var dateSearch = $("#Periode").val();
+
+
+$('#ModalSalaire').modal('show');
+        var url = '{{ path("detail_salaire_par_mois", {'idEmp': 'idEmp' ,  'date': 'date'} ) }}';
+                url = url.replace("date", dateSearch);
+                url = url.replace("idEmp", idEmp);
+
+                 $.ajax({
+                    url: url,
+
+                    success: function(data) {
+
+                            var rowNode = table.row.add( [
+           data.TotalMarche+' DT',
+           data.TotalRotation+' DT',
+          data.TotalDoublage+' DT',
+           data.SalaireRepos+' DT',
+           data.TotalAvance+' DT'
+        ] ).draw( false );
+                    },
+                    error: function() {
+                        // show alert or something
+                    },
+
+                    complete: function(){
+
+                    }
+                });
+
+                 $('#ModalSalaire').on('hidden.bs.modal', function (e) {
+
+
+table
+    .clear()
+    .draw();
+});
+
+    }
+</script>
+{% endblock %}

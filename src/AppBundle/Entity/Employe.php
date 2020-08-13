@@ -106,6 +106,7 @@ class Employe
      */
     private $tel;
 
+
     /**
      * @return \Marche
      */
@@ -137,5 +138,171 @@ class Employe
      * })
      */
     private $idMarche;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=80, nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cnss", type="string", length=100, nullable=true)
+     */
+    private $cnss;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cin", type="string", length=15, nullable=true)
+     */
+    private $cin;
+
+    /**
+     * @return string
+     */
+    public function getSituationFamiliale()
+    {
+        return $this->situationFamiliale;
+    }
+
+    /**
+     * @param string $situationFamiliale
+     */
+    public function setSituationFamiliale($situationFamiliale)
+    {
+        $this->situationFamiliale = $situationFamiliale;
+    }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="situationfamiliale", type="string", length=15, nullable=true)
+     */
+    private $situationFamiliale;
+
+    /**
+     * @return string
+     */
+    public function getCin()
+    {
+        return $this->cin;
+    }
+
+    /**
+     * @param string $cin
+     */
+    public function setCin($cin)
+    {
+        $this->cin = $cin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCnss()
+    {
+        return $this->cnss;
+    }
+
+    /**
+     * @param string $cnss
+     */
+    public function setCnss($cnss)
+    {
+        $this->cnss = $cnss;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=50, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * @param string $adresse
+     */
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+    }
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEmbauche", type="date", nullable=true)
+     */
+    private $dateEmbauche;
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEmbauche()
+    {
+        return $this->dateEmbauche;
+    }
+
+    /**
+     * @param \DateTime $dateEmbauche
+     */
+    public function setDateEmbauche($dateEmbauche)
+    {
+        $this->dateEmbauche = $dateEmbauche;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer", nullable=false , options={"default" : 1})
+     */
+    private $status;
+
+
+
 }
 

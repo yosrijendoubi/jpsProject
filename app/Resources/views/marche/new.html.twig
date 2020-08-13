@@ -1,16 +1,60 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block head %}
+{{ parent() }}
+
+    <style>
+        .center_div{
+            margin: 0 auto;
+            width:80% /* value of your choice which suits your alignment */
+        }
+    </style>
+{% endblock %}
 {% block main %}
-    <h1>Marche creation</h1>
+    <h2 style="text-align: center">Nouveau Marche</h2>
+    {{ form_start(form, { 'attr': {'class': 'center_div'} }) }}
+    {{ form_errors(form) }}
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+
+
+    <div>
+        {{ form_row(form.libellle) }}
+
+    </div>
+
+    <div>
+        {{ form_row(form.nbrrepos) }}
+    </div>
+
+
+
+    <div>
+        {{ form_row(form.spjfixe) }}
+    </div>
+
+    <div>
+        {{ form_row(form.spjchef) }}
+
+    </div>
+
+        <div>
+            {{ form_row(form.adresse) }}
+
+        </div>
+
+        <div>
+            {{ form_row(form.tel) }}
+        </div>
+
+    <div>
+        {{ form_widget(form.imageFile) }}
+    </div>
+
+        <center><button class=" btn btn-success" type="submit">Submit</button></center>
+
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('marche_index') }}">Back to the list</a>
-        </li>
-    </ul>
+
+
 {% endblock %}
