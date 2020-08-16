@@ -104,6 +104,13 @@
             margin: 100px auto;
         }
     </style>
+    <style>
+        @media only screen and (max-width: 480px) {
+            .touch .modal .modal-body {
+                max-height: none;
+            }
+        }
+    </style>
 {% endblock %}
 {% block main %}
 
@@ -242,7 +249,7 @@
     <!-- Modal -->
     <div class="modal fade" id="modal-xl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg " role="document">
             <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header">
@@ -302,11 +309,11 @@
                                         <td>{{ affection.idAgent.nom }}</td>
                                         <td>{{ affection.idAgent.prenom }}</td>
                                         <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="1"/></td>
-                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="0"/></td>
+                                        <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="0" disabled="true"/></td>
                                         {% if TotalRepos >= marche.nbrrepos %}
                                         <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2" disabled="true"/></td>
                                         {% else %}
-                                            <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2"/></td>
+                                            <td><input type="checkbox"  name="agent{{ affection.idAgent.idEmp  }}" value="2" disabled="true"/></td>
                                          {% endif %}
                                         <td><select class="form-control" id="agentjournuit{{ affection.idAgent.idEmp  }}">
                                                 <option value="{{affection.type}}">{{affection.type}}</option>
@@ -369,8 +376,8 @@
                                         <td style="font-size: 20px">{{ p.idAgent.prenom }}</td>
 
                                         <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
-                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
-                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" disabled="true"/></td>
+                                        <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" disabled="true" /></td>
 
                                         <td><select class="form-control" id="agentjournuit{{ p.idAgent.idEmp  }}">
                                                 <option value="{{p.type}}">{{p.type}}</option>
@@ -384,15 +391,15 @@
                                             <td style="font-size: 20px">{{ p.idAgent.prenom }}</td>
                                             {% if p.etat == 1 %}
                                                 <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" checked/></td>
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" disabled="true" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" disabled="true" /></td>
                                             {%  elseif p.etat == 0  %}
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" disabled="true"/></td>
                                                 <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" checked/></td>
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" disabled="true"/></td>
                                             {%  elseif p.etat == 2  %}
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1"/></td>
-                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" /></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="1" disabled="true"/></td>
+                                                <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="0" disabled="true" /></td>
                                                 <td><input type="checkbox" id="agent{{ p.idAgent.idEmp  }}" name="agent{{ p.idAgent.idEmp  }}" value="2" checked/></td>
                                             {% endif %}
                                             <td><select class="form-control" id="agentjournuit{{ p.idAgent.idEmp  }}">
@@ -988,7 +995,6 @@ function EnregisterAbsenceAgentNormal(){
                     url: url,
 
                     success: function(data) {
-                       location.reload();
                     },
                     error: function() {
                         // show alert or something
@@ -1017,7 +1023,6 @@ if (i == 0 ){
                     url: url,
 
                     success: function(data) {
-                      location.reload();
                     },
                     error: function() {
                         // show alert or something
@@ -1030,7 +1035,6 @@ if (i == 0 ){
 
 }
 {% endfor %}
-            location.reload();
 }
     function EnregisterAbsence(){
 $('#modal-xl').on('hidden.bs.modal', function (e) {
@@ -1045,6 +1049,10 @@ $('#modal-xl').on('hidden.bs.modal', function (e) {
         EnregisterAbsenceAgentRotation();
       {% endif %}
         EnregisterAbsenceAgentNormal();
+
+        $(document).ajaxStop(function() {
+       location.reload();
+});
     }
 
 
@@ -1361,7 +1369,11 @@ $(this).find('input[type=checkbox]').each(function() {
 
    }
 });
-  location.reload();
+
+    $(document).ajaxStop(function() {
+       location.reload();
+});
+
 }
 </script>
 

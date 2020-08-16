@@ -255,6 +255,7 @@
                                     <td style="color: red" >Non Affécté</td>
                                     {% endif %}
                                 <td>
+
                                     <a title="edit this user" href="{{ path('employe_edit' , { idEmp : employe.idEmp }) }}" class="btn btn-default btn-sm "> <i class="fa fa-edit text-primary"></i> </a>
                                     <a title="delete this user" class="btn btn-default btn-sm " onclick="return ShowDeleteConfirmation({{ employe.idEmp }})"> <i class="fa fa-trash text-danger"></i> </a>
                                  {% if employe.status == 1 %}

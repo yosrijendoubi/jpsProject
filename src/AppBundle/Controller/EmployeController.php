@@ -30,6 +30,7 @@ class EmployeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $employe->setStatus(1);
             $em->persist($employe);
             $em->flush();
             $this->addFlash('success', 'Employée ajoutée avec success!');
